@@ -1,0 +1,106 @@
+%==============================================================================
+% CONFIGURATION DES CALLOUTS (BOÎTES D'INFORMATION)
+%==============================================================================
+% Ce fichier définit des boîtes d'information stylisées pour différents usages
+% Note: Les couleurs sont définies dans colors.tex
+%==============================================================================
+
+%------------------------------------------------------------------------------
+% STYLE COMMUN POUR TOUS LES CALLOUTS
+%------------------------------------------------------------------------------
+\tcbset{
+    callout/.style={
+        % Configuration générale
+        enhanced,
+        breakable,
+        % Bordures et fond
+        boxrule=0pt,
+        colback=white,
+        colframe=white,
+        toprule=0pt,
+        bottomrule=0pt,
+        rightrule=0pt,
+        leftrule=0pt,
+        % Marges et espacement
+        left=25pt,          % Marge interne à gauche
+        right=5pt,
+        top=5pt,
+        bottom=5pt,
+        before skip=8pt,
+        after skip=8pt,
+        % Décalage de la boîte entière
+        left skip=1.5cm,    % Décalage à gauche
+        right skip=1.5cm,   % Décalage à droite (pour équilibrer)
+    }
+}
+
+%------------------------------------------------------------------------------
+% BOÎTE D'INFORMATION (BLEUE)
+%------------------------------------------------------------------------------
+\newtcolorbox{InfoBox}{%
+  callout,
+  borderline west={3pt}{3pt}{infoBlue},
+  overlay unbroken and first={
+    \node[anchor=north west, inner sep=0pt, text=infoBlue] 
+      at ([xshift=7pt, yshift=-5pt]frame.north west) {\faInfoCircle};
+  }
+}
+
+%------------------------------------------------------------------------------
+% BOÎTE DE CONSEIL/ASTUCE (VERTE)
+%------------------------------------------------------------------------------
+\newtcolorbox{TipBox}{%
+  callout,
+  borderline west={3pt}{3pt}{tipGreen},
+  overlay unbroken and first={
+    \node[anchor=north west, inner sep=0pt, text=tipGreen] 
+      at ([xshift=7pt, yshift=-5pt]frame.north west) {\faLightbulb};
+  }
+}
+
+%------------------------------------------------------------------------------
+% BOÎTE D'AVERTISSEMENT (ORANGE)
+%------------------------------------------------------------------------------
+\newtcolorbox{WarningBox}{%
+  callout,
+  borderline west={3pt}{3pt}{warnOrange},
+  overlay unbroken and first={
+    \node[anchor=north west, inner sep=0pt, text=warnOrange] 
+      at ([xshift=7pt, yshift=-5pt]frame.north west) {\faExclamationTriangle};
+  }
+}
+
+%------------------------------------------------------------------------------
+% BOÎTE POUR NOTES IMPORTANTES (ROUGE)
+%------------------------------------------------------------------------------
+\newtcolorbox{ImportantBox}{%
+  callout,
+  borderline west={3pt}{3pt}{impRed},
+  overlay unbroken and first={
+    \node[anchor=north west, inner sep=0pt, text=impRed] 
+      at ([xshift=7pt, yshift=-5pt]frame.north west) {\faExclamationCircle};
+  }
+}
+
+%------------------------------------------------------------------------------
+% EXEMPLES D'UTILISATION
+%------------------------------------------------------------------------------
+% 
+% \begin{InfoBox}
+%   Ceci est une boîte d'information. Utilisez-la pour des explications 
+%   supplémentaires ou des clarifications.
+% \end{InfoBox}
+% 
+% \begin{TipBox}
+%   Ceci est une astuce. Utilisez-la pour des conseils et des astuces.
+% \end{TipBox}
+% 
+% \begin{WarningBox}
+%   Ceci est un avertissement. Utilisez-le pour signaler des points d'attention
+%   ou des précautions à prendre.
+% \end{WarningBox}
+% 
+% \begin{ImportantBox}
+%   Ceci est une note importante. Utilisez-la pour des informations critiques
+%   qui ne doivent pas être négligées.
+% \end{ImportantBox}

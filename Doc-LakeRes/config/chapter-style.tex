@@ -1,0 +1,88 @@
+%==============================================================================
+% STYLE DES CHAPITRES ET SECTIONS
+%==============================================================================
+% Ce fichier définit l'apparence des titres de chapitres et sections
+%==============================================================================
+
+%------------------------------------------------------------------------------
+% STYLES DES CHAPITRES
+%------------------------------------------------------------------------------
+% Style élégant avec filets horizontaux
+\titleformat{\chapter}[display]
+  {\bfseries\Huge\centering}
+  {\rule{\textwidth}{1pt}\\\vspace{1cm}
+   \Huge Chapitre \thechapter}
+  {1cm}
+  {\Huge}
+  [\vspace{1cm}\rule{\textwidth}{1pt}]
+
+% Espacement autour des chapitres
+\titlespacing*{\chapter}
+  {0pt}        % Indentation gauche
+  {0pt}        % Espace avant
+  {2cm}        % Espace après
+
+%------------------------------------------------------------------------------
+% STYLES DES SECTIONS
+%------------------------------------------------------------------------------
+% Style pour les sections
+\titleformat{\section}
+  {\Large\bfseries}    % Format
+  {\thesection}        % Étiquette
+  {0.5em}              % Séparation
+  {}                   % Avant
+  [\titlerule]         % Après (ligne horizontale)
+
+% Espacement autour des sections
+\titlespacing*{\section}
+  {0pt}        % Indentation gauche
+  {1.5ex plus 0.5ex minus 0.2ex}    % Espace avant
+  {1.3ex plus 0.2ex}                % Espace après
+
+%------------------------------------------------------------------------------
+% STYLES DES SOUS-SECTIONS
+%------------------------------------------------------------------------------
+% Style pour les sous-sections
+\titleformat{\subsection}
+  {\large\bfseries}    % Format
+  {\thesubsection}     % Étiquette
+  {0.5em}              % Séparation
+  {}                   % Avant
+
+% Espacement autour des sous-sections
+\titlespacing*{\subsection}
+  {0pt}        % Indentation gauche
+  {1.5ex plus 0.5ex minus 0.2ex}    % Espace avant
+  {1.2ex plus 0.2ex}                % Espace après
+
+%------------------------------------------------------------------------------
+% STYLES DES SOUS-SOUS-SECTIONS
+%------------------------------------------------------------------------------
+% Style pour les sous-sous-sections
+\titleformat{\subsubsection}
+  {\normalsize\bfseries}    % Format
+  {\thesubsubsection}       % Étiquette
+  {0.5em}                   % Séparation
+  {}                        % Avant
+
+% Espacement autour des sous-sous-sections
+\titlespacing*{\subsubsection}
+  {0pt}        % Indentation gauche
+  {1.5ex plus 0.5ex minus 0.2ex}    % Espace avant
+  {1.0ex plus 0.2ex}                % Espace après
+
+%------------------------------------------------------------------------------
+% PERSONNALISATION DES CHAPITRES NON-NUMÉROTÉS
+%------------------------------------------------------------------------------
+% Forcer les chapitres non-numérotés à apparaître dans la table des matières
+\makeatletter
+\let\stdchapter\chapter
+\renewcommand*\chapter{%
+  \@ifstar{\starchapter}{\@dblarg\nostarchapter}}
+\newcommand*\starchapter[1]{%
+  \stdchapter*{#1}%
+  \markboth{#1}{#1}%
+  \addcontentsline{toc}{chapter}{#1}}
+\def\nostarchapter[#1]#2{%
+  \stdchapter[{#1}]{#2}}
+\makeatother

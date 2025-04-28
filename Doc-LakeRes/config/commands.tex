@@ -1,0 +1,98 @@
+%==============================================================================
+% COMMANDES PERSONNALISÉES UTILES
+%==============================================================================
+% Ce fichier contient des commandes LaTeX personnalisées pour faciliter
+% la rédaction et améliorer la cohérence du document
+%==============================================================================
+
+%------------------------------------------------------------------------------
+% RACCOURCIS POUR LES RÉFÉRENCES
+%------------------------------------------------------------------------------
+% Référence à une figure avec préfixe
+\newcommand{\figref}[1]{Figure~\ref{fig:#1}}
+
+% Référence à un tableau avec préfixe
+\newcommand{\tabref}[1]{Tableau~\ref{tab:#1}}
+
+% Référence à une équation avec préfixe
+\newcommand{\eqref}[1]{Équation~(\ref{eq:#1})}
+
+% Référence à une section avec préfixe
+\newcommand{\secref}[1]{Section~\ref{sec:#1}}
+
+%------------------------------------------------------------------------------
+% MISE EN ÉVIDENCE ET FORMATAGE
+%------------------------------------------------------------------------------
+% Surlignage de texte avec couleur personnalisable
+\newcommand{\highlight}[2][yellow]{\colorbox{#1}{#2}}
+
+% Texte "TODO" en rouge pour les notes pendant la rédaction
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{TODO:} #1}}
+
+% Annotation de relecture en marge
+\newcommand{\note}[1]{\marginpar{\footnotesize\textcolor{gray}{#1}}}
+
+%------------------------------------------------------------------------------
+% UNITÉS ET NOTATIONS SCIENTIFIQUES
+%------------------------------------------------------------------------------
+% Unités cohérentes avec siunitx (permet également la mise à jour globale)
+\newcommand{\ms}{\si{\meter\per\second}}
+\newcommand{\cms}{\si{\centi\meter\per\second}}
+\newcommand{\m}{\si{\meter}}
+\newcommand{\cm}{\si{\centi\meter}}
+\newcommand{\mm}{\si{\milli\meter}}
+\newcommand{\km}{\si{\kilo\meter}}
+\newcommand{\sqkm}{\si{\square\kilo\meter}}
+\newcommand{\cubicm}{\si{\cubic\meter}}
+
+% Notation mathématique spécifique au domaine
+\newcommand{\porosity}{\ensuremath{\phi}}
+\newcommand{\permeability}{\ensuremath{K}}
+\newcommand{\conductivity}{\ensuremath{\sigma}}
+
+%------------------------------------------------------------------------------
+% ENVIRONNEMENTS ET BOÎTES PERSONNALISÉS
+%------------------------------------------------------------------------------
+% Environnement pour équation avec étiquette et référence automatique
+\newenvironment{myeqnarray}[1]
+  {\begin{equation}\label{eq:#1}}
+  {\end{equation}}
+
+% Bloc de texte encadré simple
+\newcommand{\textframebox}[1]{%
+  \begin{center}
+    \fbox{\begin{minipage}{0.9\textwidth}#1\end{minipage}}
+  \end{center}
+}
+
+%------------------------------------------------------------------------------
+% COMMANDES POUR LES TITRES ET EN-TÊTES
+%------------------------------------------------------------------------------
+% Informations sur le document à définir au début pour utilisation cohérente
+\newcommand{\documenttitle}{Titre du document}
+\newcommand{\documentauthor}{Nom de l'auteur}
+\newcommand{\documentdate}{\today}
+\newcommand{\documentversion}{Version 1.0}
+
+% Pour mettre à jour les en-têtes avec ces informations:
+\newcommand{\updateheaders}{%
+  \fancyhead[L]{\textcolor{gray}{\documentauthor}}
+  \fancyhead[R]{\textcolor{gray}{\documenttitle}}
+  \fancyfoot[L]{\textcolor{gray}{\documentversion}}
+  \fancyfoot[R]{\textcolor{gray}{\documentdate}}
+}
+
+%------------------------------------------------------------------------------
+% COMMANDES POUR GESTION DES CHEMINS ET FICHIERS
+%------------------------------------------------------------------------------
+% Les commandes filepath, folderpath et urlpath sont définies dans code-style.tex
+
+% Chemin vers un script Python
+\newcommand{\pyfile}[1]{\filepath{#1.py}}
+
+% Chemin vers un fichier de données
+\newcommand{\datafile}[1]{\filepath{data/#1}}
+
+% Chemin vers un fichier de configuration
+\newcommand{\configfile}[1]{\filepath{config/#1}}
+

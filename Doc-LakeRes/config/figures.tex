@@ -1,0 +1,172 @@
+%==============================================================================
+% CONFIGURATION DES FIGURES ET TABLEAUX
+%==============================================================================
+% Ce fichier définit le style et les paramètres des figures et tableaux
+%==============================================================================
+
+%------------------------------------------------------------------------------
+% CONFIGURATION DES TABLEAUX
+%------------------------------------------------------------------------------
+% Packages pour tableaux améliorés
+\usepackage{booktabs}           % Règles horizontales de qualité typographique
+\usepackage{array}              % Fonctionnalités étendues pour les tableaux
+\usepackage{siunitx}            % Formatage cohérent des nombres et unités
+
+% Espacement des tableaux
+\renewcommand{\arraystretch}{1.2}   % Espacement vertical des lignes
+\setlength{\tabcolsep}{8pt}         % Espacement horizontal des colonnes
+
+% Configuration pour les nombres dans les tableaux
+\sisetup{
+  reset-text-family = false,     % CORRECTION: Remplacé detect-family
+  text-family-to-math = true,    % CORRECTION: Ajouté pour remplacer detect-family
+  table-number-alignment=center,  % Alignement central des nombres
+  table-format=3.2,               % CORRECTION: Remplacé table-figures-*
+  output-decimal-marker=.,        % Utilise le point comme séparateur décimal
+  exponent-mode=fixed             % Format fixe pour les exposants
+}
+
+%------------------------------------------------------------------------------
+% CONFIGURATION DES LÉGENDES
+%------------------------------------------------------------------------------
+% Définition des polices pour les légendes
+\DeclareCaptionFont{figcaption}{\small\sffamily}       % Police du texte de légende
+\DeclareCaptionFont{figlabel}{\bfseries\sffamily}      % Police de l'étiquette (Figure X:)
+
+% Style pour légendes de figures
+\captionsetup[figure]{
+    format=hang,                % Format suspendu (étiquette en dehors de la marge)
+    font=figcaption,            % Police du texte
+    labelfont=figlabel,         % Police de l'étiquette
+    labelsep=quad,              % Espace après l'étiquette
+    justification=raggedright,  % Alignement à gauche
+    singlelinecheck=true,       % Centrage automatique des légendes courtes
+    skip=10pt,                  % Espace après la figure, avant la légende
+    hypcap=false                % CORRECTION: Désactivé hypcap par défaut
+}
+
+% Style pour légendes de tableaux
+\captionsetup[table]{
+    format=hang,                % Format suspendu
+    font=figcaption,            % Police du texte
+    labelfont=figlabel,         % Police de l'étiquette
+    labelsep=quad,              % Espace après l'étiquette
+    justification=centering,    % Alignement centré pour les tableaux
+    singlelinecheck=true,       % Centrage automatique des légendes courtes
+    skip=5pt,                   % Espace après le tableau, avant la légende
+    hypcap=false                % CORRECTION: Désactivé hypcap par défaut
+}
+
+% Style pour sous-figures
+\captionsetup[subfigure]{
+    format=hang,                % Format suspendu
+    font=figcaption,            % Police du texte
+    labelfont=figlabel,         % Police de l'étiquette
+    labelsep=space,             % Espace simple après l'étiquette
+    justification=centering,    % Alignement centré
+    singlelinecheck=true,       % Centrage automatique des légendes courtes
+    skip=5pt                    % Espace après la sous-figure
+}
+
+% Traduction des titres des listes de figures et tableaux
+\renewcommand{\listfigurename}{Liste des figures}
+\renewcommand{\listtablename}{Liste des tableaux}
+
+%------------------------------------------------------------------------------
+% ENVIRONNEMENT POUR FIGURES CENTRÉES
+%------------------------------------------------------------------------------
+% Commande facilitant l'insertion de figures
+\newcommand{\centeredfigure}[3][1.0]{%
+    \begin{center}
+        \includegraphics[width=#1\textwidth]{#2}
+        \captionof{figure}{#3}
+        \label{fig:#2}
+    \end{center}
+}
+
+%------------------------------------------------------------------------------
+% COMMANDES POUR SOUS-FIGURES
+%------------------------------------------------------------------------------
+% Facilite la création de groupes de sous-figures (2 côte à côte)
+\newcommand{\twofigures}[6][0.45]{%
+    % #1 = largeur relative [optionnel, défaut=0.45]
+    % #2, #4 = chemins des images
+    % #3, #5 = légendes des sous-figures
+    % #6 = légende principale
+    \begin{figure}[htbp]
+        \centering
+        \begin{subfigure}[b]{#1\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{#2}
+            \caption{#3}
+            \label{fig:#2}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{#1\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{#4}
+            \caption{#5}
+            \label{fig:#4}
+        \end{subfigure}
+        \caption{#6}
+        \label{fig:#2-#4}
+    \end{figure}
+}
+
+% Facilite la création de groupes de sous-figures (3 côte à côte)
+\newcommand{\threefigures}[8][0.3]{%
+    % #1 = largeur relative [optionnel, défaut=0.3]
+    % #2, #4, #6 = chemins des images
+    % #3, #5, #7 = légendes des sous-figures
+    % #8 = légende principale
+    \begin{figure}[htbp]
+        \centering
+        \begin{subfigure}[b]{#1\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{#2}
+            \caption{#3}
+            \label{fig:#2}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{#1\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{#4}
+            \caption{#5}
+            \label{fig:#4}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{#1\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{#6}
+            \caption{#7}
+            \label{fig:#6}
+        \end{subfigure}
+        \caption{#8}
+        \label{fig:#2-#4-#6}
+    \end{figure}
+}
+
+%------------------------------------------------------------------------------
+% TABLEAUX PERSONNALISÉS
+%------------------------------------------------------------------------------
+% Environnement pour tableaux avec en-têtes en gras
+\newenvironment{nicetable}[3]{%
+    % #1 = légende
+    % #2 = label
+    % #3 = colonnes (ex: {lcc})
+    \begin{table}[htbp]
+    \centering
+    \caption{#1}
+    \label{#2}
+    \begin{tabular}{#3}
+    \toprule
+}{%
+    \bottomrule
+    \end{tabular}
+    \end{table}
+}
+
+% Commande pour ligne d'en-tête en gras
+\newcommand{\tableheader}[1]{%
+    \textbf{#1}%
+}

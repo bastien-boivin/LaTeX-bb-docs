@@ -1,0 +1,96 @@
+%==============================================================================
+% CHAPITRE D'INTRODUCTION
+%==============================================================================
+
+\chapter{Introduction}
+
+% Mini-table des matières du chapitre
+\minitoc
+
+\newpage
+
+%------------------------------------------------------------------------------
+% OBJECTIF DE LA THÈSE
+%------------------------------------------------------------------------------
+\section{Objectif de la thèse}
+
+Cette thèse vise à développer des modèles hydrogéologiques avancés pour caractériser et prédire les flux d'eau souterraine dans le bassin rennais. Les objectifs principaux incluent l'intégration des données de terrain, la modélisation multi-échelle des écoulements, et l'évaluation de l'impact des changements climatiques sur les ressources en eau.
+
+%------------------------------------------------------------------------------
+% CONTEXTE SCIENTIFIQUE
+%------------------------------------------------------------------------------
+\section{Contexte scientifique}
+
+La compréhension des flux hydrogéologiques est essentielle pour la gestion durable des ressources en eau. Dans le contexte du bassin rennais, les interactions entre eaux souterraines et eaux de surface sont particulièrement complexes en raison de la géologie hétérogène et des pressions anthropiques croissantes. Ce projet s'inscrit dans une démarche globale d'amélioration des connaissances scientifiques sur les systèmes aquifères fracturés.
+
+%------------------------------------------------------------------------------
+% EXEMPLES DE CODE
+%------------------------------------------------------------------------------
+\section{Exemples de code moderne}
+
+Le code suivant montre un exemple simple de classe Python avec coloration syntaxique adaptée:
+
+\begin{pythoncode}
+class Compteur:
+    def __init__(self, start=0):
+        self.count = start        # <- 'self' est coloré
+    def increment(self):
+        self.count += 1
+        print(f"Valeur : {self.count}")
+
+# Usage
+if __name__ == "__main__":
+    c = Compteur()
+    for _ in range(3):
+        c.increment()
+\end{pythoncode}
+
+Ce code simple illustre l'utilisation d'une classe Python avec initialisation et méthode d'incrémentation. La colorisation syntaxique met en évidence les différents éléments du code pour une meilleure lisibilité.
+
+%------------------------------------------------------------------------------
+% EXEMPLES D'UTILISATION DES COMMANDES PERSONNALISÉES
+%------------------------------------------------------------------------------
+\section{Utilisation des commandes personnalisées}
+
+\subsection{Références et citations}
+
+Vous pouvez facilement référencer \figref{logo_rennes} ou \tabref{conductivite} en utilisant les commandes personnalisées. Ces commandes garantissent une cohérence dans tout le document.
+
+\subsection{Code en ligne}
+
+Vous pouvez facilement intégrer du code en ligne comme \inlinecode{print("Bonjour")} ou 
+\inlinecode{def fonction(x, y)} dans votre texte. Cette commande gère correctement les caractères 
+spéciaux comme les underscores: \inlinecode{data_frame.apply(lambda x: x*2)}.
+
+\subsection{Chemins de fichiers}
+
+Il est souvent utile d'inclure des chemins de fichiers comme \filepath{/home/user/data.csv} ou 
+de faire référence à des dossiers comme \folderpath{scripts/analyse/}. Pour les URL, utilisez
+\urlpath{https://texdoc.org/}.
+
+%------------------------------------------------------------------------------
+% EXEMPLES DE CALLOUTS
+%------------------------------------------------------------------------------
+\section{Utilisation des callouts}
+
+Voici du texte normal pour montrer la différence de décalage entre 
+le texte principal et les callouts qui suivent.
+
+\begin{InfoBox}
+Pour exécuter le script entier, naviguez vers \folderpath{scripts/analyse/} puis lancez \filepath{./run.sh}.
+\end{InfoBox}
+
+Retour au texte normal qui n'est pas décalé. Vous pouvez référencer la Figure~\ref{fig:logo_rennes} ou le Tableau~\ref{tab:conductivite}. 
+Pour en savoir plus, consultez la documentation en ligne à \urlpath{https://texdoc.org/}.
+
+\begin{TipBox}
+Astuce : pensez à compiler avec \filepath{latexmk -pdf -silent main.tex}.
+\end{TipBox}
+
+\begin{WarningBox}
+Attention : la fonction \inlinecode{analyse_avancee()} est expérimentale, vérifiez le log dans \folderpath{/var/log/analyse/}.
+\end{WarningBox}
+
+\begin{ImportantBox}
+Important : sauvegardez toujours votre travail dans \folderpath{/home/user/backup/} avant toute reconfiguration.
+\end{ImportantBox}
