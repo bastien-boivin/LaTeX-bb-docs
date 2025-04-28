@@ -1,0 +1,154 @@
+%==============================================================================
+% TEMPLATE DOCUMENT SCIENTIFIQUE
+%==============================================================================
+% Ce template est conçu pour la rédaction de documents scientifiques
+% avec support pour code source, figures, tableaux et éléments explicatifs
+%==============================================================================
+
+\documentclass[12pt,a4paper]{report}
+
+%==============================================================================
+% IMPORTATION DES FICHIERS DE CONFIGURATION
+%==============================================================================
+\input{config/packages.tex}      % Packages nécessaires
+\input{config/colors.tex}        % Définition des couleurs
+\input{config/layout.tex}        % Mise en page et marges
+\input{config/chapter-style.tex} % Style des chapitres
+\input{config/headers.tex}       % En-têtes et pieds de page
+\input{config/code-style.tex}    % Configuration pour le code
+\input{config/callouts.tex}      % Boîtes d'information
+\input{config/figures.tex}       % Gestion des figures
+\input{config/commands.tex}      % Commandes personnalisées
+\input{config/bibliography.tex}  % Configuration de la bibliographie
+
+% Définition des informations du document (utile pour les en-têtes)
+\newcommand{\docTitle}{Documentation Scientifique}
+\newcommand{\docAuthor}{Bastien Boivin}
+\newcommand{\docVersion}{Version 1.0}
+\newcommand{\docYear}{2025}
+
+% Application des informations aux en-têtes et pieds de page
+\fancyhead[L]{\textcolor{gray}{\docAuthor}}
+\fancyhead[R]{\textcolor{gray}{\docTitle}}
+\fancyfoot[L]{\textcolor{gray}{\docVersion}}
+\fancyfoot[R]{\textcolor{gray}{\docYear}}
+
+%==============================================================================
+% DÉBUT DU DOCUMENT
+%==============================================================================
+\begin{document}
+
+% Activation des mini-tables des matières
+\dominitoc
+
+%------------------------------------------------------------------------------
+% PAGES PRÉLIMINAIRES
+%------------------------------------------------------------------------------
+\input{content/frontmatter/titlepage.tex}
+
+% Tables des matières, figures, etc.
+\tableofcontents
+\listoffigures
+\listoftables
+
+% Style des pages pour le contenu principal
+\pagestyle{fancy}
+
+%------------------------------------------------------------------------------
+% CONTENU PRINCIPAL
+%------------------------------------------------------------------------------
+\input{content/chapters/introduction.tex}
+
+%------------------------------------------------------------------------------
+% EXEMPLES D'UTILISATION DES FONCTIONNALITÉS DU TEMPLATE
+%------------------------------------------------------------------------------
+\chapter{Exemples d'utilisation du template}
+\minitoc
+\newpage
+
+\section{Exemples de figures}
+\label{sec:exemples-de-figures}
+
+% Exemple de figure simple
+\begin{figure}[htbp] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{assets/figures/logos/Logo_Univ_Rennes.png}
+    \caption{Exemple de figure avec légende. Les légendes peuvent être assez longues tout en conservant un bon formatage.}
+    \label{fig:exemple_figure}
+\end{figure}
+
+% Exemple de figure avec la commande personnalisée
+\centeredfigure[0.4]{assets/figures/logos/Logo_Univ_Rennes.png}{Exemple d'utilisation de la commande \texttt{centeredfigure} qui simplifie l'insertion.}
+
+\section{Exemples de tableaux}
+\label{sec:exemples-de-tableaux}
+
+% Exemple de tableau simple
+\begin{table}[H]
+  \centering
+  \caption{Exemple de tableau formaté}
+  \label{tab:exemple}
+  \begin{tabular}{l S[table-format=2.1] S[table-format=3.2]}
+    \toprule
+    {Paramètre} & {Valeur 1} & {Valeur 2} \\
+    \midrule
+    Alpha & 10.5 & 105.00 \\
+    Beta & 20.7 & 207.50 \\
+    Gamma & 30.2 & 302.75 \\
+    Delta & 40.0 & 400.00 \\
+    \addlinespace
+    \multicolumn{2}{l}{\textbf{Moyenne}} & 253.81 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Exemples de citations et bibliographie}
+\label{sec:exemples-de-citations}
+
+\subsection{Citations dans le texte}
+
+Voici différentes façons de citer des références :
+
+\begin{itemize}
+    \item Citation simple entre parenthèses : \parencite{Aquilina2012}.
+    \item Citation intégrée dans le texte : Selon \textcite{deDreuzy2010}, l'écoulement en milieu poreux...
+    \item Citation avec l'auteur et l'année : \textcite{Bear2018} a démontré que...
+    \item Citation multiple : Plusieurs études récentes \parencite{DeRidder2022,Bour2017,Roques2013} montrent que...
+    \item Citation avec page : \parencite[p.~167]{Marsily1986}.
+\end{itemize}
+
+\subsection{Présentation de concepts hydrogéologiques}
+
+La compréhension des flux hydrogéologiques est essentielle pour la gestion durable des ressources en eau. Les modèles mathématiques développés par \textcite{deDreuzy2010} permettent de simuler les écoulements dans des milieux hétérogènes. 
+
+Ces systèmes sont caractérisés par leur \permeability{} et leur \porosity{}, paramètres fondamentaux décrits par \textcite{Bear2018}. Dans le contexte du bassin rennais, les interactions entre eaux souterraines et eaux de surface sont particulièrement étudiées \parencite{Aquilina2012}.
+
+Les travaux de \textcite{Roques2013} sur les zones de faille du Massif Armoricain ont considérablement enrichi notre compréhension des ressources en eau locales. Plus récemment, le rapport de \parencite{BRGM2020} a évalué l'impact des prélèvements sur le niveau des nappes dans la région.
+
+%------------------------------------------------------------------------------
+% CHAPITRES SUPPLÉMENTAIRES (COMMENTÉS PAR DÉFAUT)
+%------------------------------------------------------------------------------
+% Décommentez ces lignes et créez les fichiers correspondants pour ajouter des chapitres
+% \input{content/chapters/chapitre1.tex}
+% \input{content/chapters/chapitre2.tex}
+% \input{content/chapters/chapitre3.tex}
+
+%------------------------------------------------------------------------------
+% BIBLIOGRAPHIE
+%------------------------------------------------------------------------------
+\cleardoublepage
+\phantomsection
+\printbibliography[heading=bibliography, title=Références bibliographiques]
+
+% Alternative pour natbib (décommentez si vous utilisez natbib)
+% \bibliography{assets/bibliography/references}
+
+%------------------------------------------------------------------------------
+% PAGES FINALES
+%------------------------------------------------------------------------------
+% Décommentez ces lignes et créez les fichiers correspondants pour ajouter des pages finales
+% \appendix  % Début des annexes
+% \input{content/backmatter/annexe_a.tex}
+% \input{content/backmatter/annexe_b.tex}
+
+\end{document}

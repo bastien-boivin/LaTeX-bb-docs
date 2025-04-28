@@ -1,0 +1,74 @@
+%==============================================================================
+% CONFIGURATION DE LA MISE EN PAGE
+%==============================================================================
+% Ce fichier contient les paramètres de mise en page du document
+%==============================================================================
+
+%------------------------------------------------------------------------------
+% MARGES ET DIMENSIONS DE PAGE
+%------------------------------------------------------------------------------
+\usepackage[
+  a4paper,           % Format A4
+  top=2.5cm,         % Marge supérieure
+  bottom=2.5cm,      % Marge inférieure
+  left=2cm,          % Marge gauche
+  right=2cm,         % Marge droite
+  footskip=1cm,      % Espace pour le pied de page
+  includehead=true,  % Inclure l'en-tête dans la hauteur de page
+  includefoot=true,  % Inclure le pied de page dans la hauteur de page
+  heightrounded      % Arrondir la hauteur à un nombre entier de lignes
+]{geometry}
+
+%------------------------------------------------------------------------------
+% ESPACEMENTS
+%------------------------------------------------------------------------------
+% Espacement des paragraphes
+\setlength{\parindent}{1em}      % Indentation des paragraphes
+\setlength{\parskip}{0.5em plus 0.1em minus 0.1em}  % Espace entre paragraphes
+
+% Espacement des listes
+\usepackage{enumitem}            % Meilleur contrôle des listes
+\setlist{nosep}                  % Supprime l'espace vertical supplémentaire
+\setlist[itemize]{leftmargin=*}  % Alignement des puces avec le texte
+
+%------------------------------------------------------------------------------
+% RÉGLAGES DE JUSTIFICATION ET CÉSURE
+%------------------------------------------------------------------------------
+\usepackage{ragged2e}            % Contrôle amélioré de la justification
+\tolerance=1000                  % Augmente la tolérance pour les lignes
+\emergencystretch=10pt           % Aide LaTeX à éviter les dépassements
+\hyphenpenalty=1000              % Diminue la probabilité de césure
+\hbadness=10000                  % Supprime les avertissements de boîtes sous-remplies
+
+%------------------------------------------------------------------------------
+% RÉGLAGES POUR FIGURES ET TABLEAUX FLOTTANTS
+%------------------------------------------------------------------------------
+% Contrôle des positionnements des flottants
+\renewcommand{\topfraction}{0.85}       % Max fraction de page pour flottant en haut
+\renewcommand{\bottomfraction}{0.75}    % Max fraction de page pour flottant en bas
+\renewcommand{\textfraction}{0.15}      % Min fraction de texte dans une page
+\renewcommand{\floatpagefraction}{0.7}  % Min fraction pour une page de flottants
+
+% Réglage des espaces entre flottants et texte
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}     % Espace entre texte et flottant
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}          % Espace entre flottants
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}         % Espace autour flottant dans texte
+
+%------------------------------------------------------------------------------
+% PERSONNALISATION DES LISTES
+%------------------------------------------------------------------------------
+% Configuration des listes numérotées
+\setlist[enumerate,1]{label=\arabic*., ref=\arabic*}   % Premier niveau: 1., 2., ...
+\setlist[enumerate,2]{label=\alph*), ref=\alph*}       % Second niveau: a), b), ...
+\setlist[enumerate,3]{label=\roman*., ref=\roman*}     % Troisième niveau: i., ii., ...
+
+% Configuration des listes à puces
+\setlist[itemize,1]{label=\textbullet}                 % Premier niveau: •
+\setlist[itemize,2]{label=\textendash}                 % Second niveau: –
+\setlist[itemize,3]{label=\textasteriskcentered}       % Troisième niveau: *
+
+%------------------------------------------------------------------------------
+% GESTION DES LIGNES ORPHELINES ET VEUVES
+%------------------------------------------------------------------------------
+\widowpenalty=10000      % Évite fortement les veuves (dernière ligne d'un paragraphe seule en haut de page)
+\clubpenalty=10000       % Évite fortement les orphelines (première ligne d'un paragraphe seule en bas de page)

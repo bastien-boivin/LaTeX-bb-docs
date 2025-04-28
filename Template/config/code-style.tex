@@ -1,0 +1,100 @@
+%==============================================================================
+% CONFIGURATION POUR L'AFFICHAGE DU CODE
+%==============================================================================
+% Ce fichier contient la configuration pour l'affichage du code source
+% Il configure les styles visuels et les environnements de code
+%==============================================================================
+
+%------------------------------------------------------------------------------
+% CONFIGURATION DU STYLE DE CODE PYTHON (GITHUB DARK)
+%------------------------------------------------------------------------------
+% Note: Les couleurs sont définies dans colors.tex
+
+\lstdefinestyle{githubdark}{%
+  language=Python,
+  backgroundcolor=\color{gdbg},
+  basicstyle=\ttfamily\small\color{gdfg},
+  keywordstyle=\color{kdkeyword}\bfseries,
+  commentstyle=\color{gdcomment}\itshape,
+  stringstyle=\color{gdstring},
+  identifierstyle=\color{gdidentifier},
+  emph={self},emphstyle=\color{gdself}\bfseries,
+  showstringspaces=false,
+  numbers=left,numberstyle=\tiny\color{gdcomment},numbersep=6pt,
+  breaklines=true,frame=none,captionpos=b,tabsize=4,
+  inputencoding=utf8,extendedchars=true,
+  literate={é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {à}{{\`a}}1 {ç}{{\c{c}}}1
+}
+
+%------------------------------------------------------------------------------
+% ENVIRONNEMENT POUR BLOC DE CODE PYTHON
+%------------------------------------------------------------------------------
+\tcbset{
+  pythonlisting/.style={enhanced,breakable,arc=4pt,boxrule=0pt,
+    colback=gdbg,colframe=gdbg,left=4pt,right=4pt,top=4pt,bottom=4pt,
+    listing only,listing options={style=githubdark},
+  }
+}
+
+\newtcblisting{pythoncode}[1][]{pythonlisting,title=#1}
+
+%------------------------------------------------------------------------------
+% CODE EN LIGNE
+%------------------------------------------------------------------------------
+% Style pour le code en ligne
+\lstdefinestyle{inlinestyle}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{inlineCodeBg},
+  breaklines=true,
+  keepspaces=true,
+  columns=flexible,
+  showstringspaces=false,
+  showspaces=false
+}
+
+% Configuration globale de lstinline
+\lstset{style=inlinestyle}
+
+% Commande pour code en ligne avec formatage cohérent
+\newcommand{\inlinecode}[1]{%
+  \colorbox{inlineCodeBg}{%
+    \lstinline[basicstyle=\ttfamily\small\color{inlineCodeText}]!#1!%
+  }%
+}
+
+%------------------------------------------------------------------------------
+% STYLES POUR D'AUTRES LANGAGES (PEUT ÊTRE ÉTENDU)
+%------------------------------------------------------------------------------
+
+% Ajoutez ici d'autres définitions de styles pour d'autres langages
+% Par exemple: R, Matlab, C++, Java, etc.
+
+% \lstdefinestyle{rcode}{...}
+% \newtcblisting{rcode}[1][]{...}
+
+%------------------------------------------------------------------------------
+% CHEMINS DE FICHIERS STYLISÉS
+%------------------------------------------------------------------------------
+
+% Chemin de fichier simple
+\newcommand{\filepath}[1]{%
+  \colorbox{pathBg}{%
+    \lstinline[basicstyle=\ttfamily\small\color{pathText}]!#1!%
+  }%
+}
+
+% Chemin avec icône de dossier
+\newcommand{\folderpath}[1]{%
+  \colorbox{pathBg}{%
+    \textcolor{folderColor}{\faFolder}\,%
+    \lstinline[basicstyle=\ttfamily\small\color{pathText}]!#1!%
+  }%
+}
+
+% Chemin URL
+\newcommand{\urlpath}[1]{%
+  \colorbox{urlBg}{%
+    \textcolor{linkColor}{\faLink}\,%
+    \lstinline[basicstyle=\ttfamily\small\color{urlText}]!#1!%
+  }%
+}

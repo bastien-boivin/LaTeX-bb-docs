@@ -1,0 +1,133 @@
+%==============================================================================
+% CONFIGURATION DE LA BIBLIOGRAPHIE
+%==============================================================================
+\usepackage[
+  backend=biber,
+  style=authoryear-comp,
+  sorting=nyt,
+  maxcitenames=2,
+  maxbibnames=99,
+  giveninits=true,
+  uniquename=init,
+  doi=true,
+  isbn=false,
+  url=true,
+  eprint=false,
+  dashed=false,
+  clearlang=true,
+  abbreviate=true,
+  autolang=hyphen,
+]{biblatex}
+
+\hypersetup{hypertexnames=true}
+
+%------------------------------------------------------------------------------
+% CRÉATION DES POINTS D'ANCRAGE POUR LES HYPERLIENS
+%------------------------------------------------------------------------------
+\makeatletter
+\AtBeginDocument{%
+  \AtEveryCitekey{%
+    \hypertarget{cite.\thefield{entrykey}}{}%
+  }
+}
+
+%------------------------------------------------------------------------------
+% SUPPRESSION DES CROCHETS ET FORMATAGE CORRECT
+%------------------------------------------------------------------------------
+% Formatage correct pour l'année
+\DeclareFieldFormat{labelyear}{#1}
+\DeclareFieldFormat{extrayear}{}
+
+% Délimiteurs pour apparence correcte
+\DeclareDelimFormat{nameyeardelim}{\addcomma\space}
+\DeclareDelimFormat{multicitedelim}{\addsemicolon\space}
+
+%------------------------------------------------------------------------------
+% REDÉFINITION COMPLÈTE DES MACROS DE CITATION
+%------------------------------------------------------------------------------
+% Citation parenthétique sans crochets
+\renewbibmacro*{cite}{%
+  \printtext[bibhyperref]{%
+    \printnames{labelname}%
+    \setunit{\nameyeardelim}%
+    \printfield{year}%
+  }%
+}
+
+% Citation textuelle sans crochets
+\renewbibmacro*{textcite}{%
+  \printtext[bibhyperref]{%
+    \printnames{labelname}%
+    \setunit{\addspace}%
+    \printtext[parens]{\printfield{year}}%
+  }%
+}
+
+% Configuration pour que bibhyperref utilise correctement le lien
+\DeclareFieldFormat{bibhyperref}{%
+  \bibhyperref{#1}%
+}
+
+\newrobustcmd{\bibhyperref}[1]{%
+  \hyperlink{cite.\thefield{entrykey}}{#1}%
+}
+
+% Redéfinir les macros cite et textcite pour qu'ils fonctionnent avec des parenthèses
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\textcite}
+  {\boolfalse{cbx:parens}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{textcite}}
+  {\ifbool{cbx:parens}
+     {\bibcloseparen\global\boolfalse{cbx:parens}}
+     {}%
+   \multicitedelim}
+  {\usebibmacro{textcite:postnote}}
+
+%------------------------------------------------------------------------------
+% PERSONNALISATIONS SUPPLÉMENTAIRES
+%------------------------------------------------------------------------------
+\DeclareNameAlias{author}{family-given}
+\DeclareFieldFormat{pages}{#1}
+\DeclareFieldFormat{title}{\textit{#1}}
+
+% Chargement du fichier .bib
+\addbibresource{assets/bibliography/references.bib}
+
+% Compatibilité avec les commandes standard
+\let\citep\parencite
+\providecommand{\citet}{\textcite}
+
+%------------------------------------------------------------------------------
+% TRADUCTIONS ET PERSONNALISATIONS
+%------------------------------------------------------------------------------
+\DefineBibliographyStrings{french}{%
+  bibliography = {Références bibliographiques},
+  references = {Références},
+  page = {p\adddot},
+  pages = {pp\adddot},
+  in = {dans},
+  volume = {vol\adddot},
+  number = {n\textsuperscript{o}},
+  editor = {éd\adddot},
+  editors = {éds\adddot},
+}
+
+%------------------------------------------------------------------------------
+% PARAMÈTRES D'AFFICHAGE DE LA BIBLIOGRAPHIE
+%------------------------------------------------------------------------------
+\setlength{\bibhang}{0.8cm}
+\setlength{\bibitemsep}{0.5\baselineskip}
+
+\defbibheading{bibliography}[\bibname]{%
+  \chapter*{#1}%
+  \markboth{#1}{#1}%
+  \addcontentsline{toc}{chapter}{#1}%
+}
+\makeatother

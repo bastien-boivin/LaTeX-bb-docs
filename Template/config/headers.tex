@@ -1,0 +1,103 @@
+%==============================================================================
+% CONFIGURATION DES EN-TÊTES ET PIEDS DE PAGE
+%==============================================================================
+% Ce fichier définit l'apparence des en-têtes et pieds de page du document
+%==============================================================================
+
+%------------------------------------------------------------------------------
+% CONFIGURATION DE BASE
+%------------------------------------------------------------------------------
+% Réinitialisation des styles de page
+\pagestyle{fancy}              % Active le style fancy pour tout le document
+\fancyhf{}                     % Efface tous les champs d'en-tête et pied de page
+
+% Hauteur minimale pour l'en-tête (évite les avertissements)
+\setlength{\headheight}{14.9pt}
+
+%------------------------------------------------------------------------------
+% PERSONNALISATION DES EN-TÊTES
+%------------------------------------------------------------------------------
+% Contenu des en-têtes (à personnaliser selon vos besoins)
+\fancyhead[L]{\textcolor{gray}{AUTEUR}}        % Gauche: Nom de l'auteur
+\fancyhead[R]{\textcolor{gray}{TITRE COURT}}   % Droite: Titre court du document
+
+% Variante avec titre de chapitre (décommentez si préféré)
+% \fancyhead[L]{\textcolor{gray}{\leftmark}}     % Gauche: Titre du chapitre courant
+% \fancyhead[R]{\textcolor{gray}{\rightmark}}    % Droite: Titre de la section courante
+
+%------------------------------------------------------------------------------
+% PERSONNALISATION DES PIEDS DE PAGE
+%------------------------------------------------------------------------------
+% Contenu des pieds de page
+\fancyfoot[L]{\textcolor{gray}{VERSION}}    % Gauche: Statut du document (ex: Brouillon)
+\fancyfoot[R]{\textcolor{gray}{ANNÉE}}      % Droite: Année
+\fancyfoot[C]{\thepage}                     % Centre: Numéro de page
+
+%------------------------------------------------------------------------------
+% STYLE DES FILETS (RÈGLES HORIZONTALES)
+%------------------------------------------------------------------------------
+% Épaisseur des filets
+\renewcommand{\headrulewidth}{0.4pt}       % Ligne sous l'en-tête
+\renewcommand{\footrulewidth}{0.4pt}       % Ligne au-dessus du pied de page
+
+% Couleur des filets
+\renewcommand{\headrule}{\color{gray}\hrule height \headrulewidth}
+\renewcommand{\footrule}{\color{gray}\hrule height \footrulewidth}
+
+%------------------------------------------------------------------------------
+% STYLES DE PAGE SPÉCIAUX
+%------------------------------------------------------------------------------
+% Style pour les pages de chapitre
+\fancypagestyle{plain}{%
+  \fancyhf{}                               % Efface tous les champs
+  \fancyfoot[C]{\thepage}                  % Centre: Numéro de page
+  \renewcommand{\headrulewidth}{0pt}       % Pas de ligne sous l'en-tête
+  \renewcommand{\footrulewidth}{0.4pt}     % Ligne au-dessus du pied de page
+}
+
+% Style pour les pages de début de partie (optionnel)
+\fancypagestyle{partpage}{%
+  \fancyhf{}                               % Efface tous les champs
+  \renewcommand{\headrulewidth}{0pt}       % Pas de ligne sous l'en-tête
+  \renewcommand{\footrulewidth}{0pt}       % Pas de ligne au-dessus du pied de page
+}
+
+%------------------------------------------------------------------------------
+% PERSONNALISATION POUR DIFFÉRENTES PARTIES DU DOCUMENT
+%------------------------------------------------------------------------------
+% Commandes permettant de changer de style pour différentes parties
+% À utiliser au début de chaque partie concernée
+
+% Pages préliminaires (avant-propos, etc.)
+\newcommand{\frontmatterstyle}{%
+  \fancyhead[L]{\textcolor{gray}{AUTEUR}}
+  \fancyhead[R]{\textcolor{gray}{Avant-propos}}
+}
+
+% Corps principal
+\newcommand{\mainmatterstyle}{%
+  \fancyhead[L]{\textcolor{gray}{AUTEUR}}
+  \fancyhead[R]{\textcolor{gray}{TITRE COURT}}
+}
+
+% Annexes
+\newcommand{\appendixstyle}{%
+  \fancyhead[L]{\textcolor{gray}{AUTEUR}}
+  \fancyhead[R]{\textcolor{gray}{Annexes}}
+}
+
+%------------------------------------------------------------------------------
+% INSTRUCTIONS D'UTILISATION 
+%------------------------------------------------------------------------------
+% Pour changer le style en cours de document, utilisez:
+%   \frontmatterstyle
+%   \mainmatterstyle
+%   \appendixstyle
+%
+% Pour remplacer "AUTEUR", "TITRE COURT", etc., modifiez les commandes correspondantes
+% au début de votre document principal, par exemple:
+%
+% \renewcommand{\frontmatterstyle}{%
+%   \fancyhead[L]{\textcolor{gray}{Jean Dupont}}
+%   \fancyhead[R]{\textcolor{gray}{Avant-propos}}
+% }

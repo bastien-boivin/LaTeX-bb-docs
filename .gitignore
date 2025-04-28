@@ -26,34 +26,50 @@
 *.vrb
 *.xdv
 *.mtc
+*.mtc*
+*.maf
+*.ptc
+*.bcf
+*.run.xml
 
-# Pour inclure tous les sous-dossiers
-**/*.aux
-**/*.bbl
-**/*.blg
-**/*.brf
-**/*.idx
-**/*.ilg
-**/*.ind
-**/*.lof
-**/*.log
-**/*.lot
-**/*.out
-**/*.toc
-**/*.acn
-**/*.acr
-**/*.alg
-**/*.glg
-**/*.glo
-**/*.gls
-**/*.ist
-**/*.fls
-**/*.fdb_latexmk
-**/*.synctex.gz
-**/*.nav
-**/*.snm
-**/*.vrb
-**/*.xdv
-**/*.mtc
+# Spécifique au projet Documentation_LakeRes
+Documentation_LakeRes/**/*.aux
+Documentation_LakeRes/**/*.bbl
+Documentation_LakeRes/**/*.blg
+Documentation_LakeRes/**/*.brf
+Documentation_LakeRes/**/*.idx
+Documentation_LakeRes/**/*.ilg
+Documentation_LakeRes/**/*.ind
+Documentation_LakeRes/**/*.lof
+Documentation_LakeRes/**/*.log
+Documentation_LakeRes/**/*.lot
+Documentation_LakeRes/**/*.out
+Documentation_LakeRes/**/*.toc
+Documentation_LakeRes/**/*.acn
+Documentation_LakeRes/**/*.acr
+Documentation_LakeRes/**/*.alg
+Documentation_LakeRes/**/*.glg
+Documentation_LakeRes/**/*.glo
+Documentation_LakeRes/**/*.gls
+Documentation_LakeRes/**/*.ist
+Documentation_LakeRes/**/*.fls
+Documentation_LakeRes/**/*.fdb_latexmk
+Documentation_LakeRes/**/*.synctex.gz
+Documentation_LakeRes/**/*.nav
+Documentation_LakeRes/**/*.snm
+Documentation_LakeRes/**/*.vrb
+Documentation_LakeRes/**/*.xdv
+Documentation_LakeRes/**/*.mtc
+Documentation_LakeRes/**/*.mtc*
+Documentation_LakeRes/**/*.maf
+Documentation_LakeRes/**/*.ptc
+Documentation_LakeRes/**/*.bcf
+Documentation_LakeRes/**/*.run.xml
 
-Documentation_LakeRes/*.mtc
+# Ignorer les PDF générés (optionnel, à enlever si vous voulez suivre les PDF)
+# *.pdf
+
+# Ignorer le dossier de sortie si vous en utilisez un
+# out/
+# build/
+# output/

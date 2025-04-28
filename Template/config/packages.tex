@@ -1,0 +1,70 @@
+%==============================================================================
+% CONFIGURATION DES PACKAGES
+%==============================================================================
+% Ce fichier contient tous les packages nécessaires pour le template
+%==============================================================================
+
+%------------------------------------------------------------------------------
+% ENCODAGE ET POLICES
+%------------------------------------------------------------------------------
+\usepackage[utf8]{inputenc}     % Prise en charge des caractères accentués
+\usepackage[T1]{fontenc}        % Encodage des polices pour support du français
+\usepackage[french]{babel}      % Support de la langue française
+\usepackage{lmodern}            % Police Latin Modern
+\usepackage{microtype}          % Améliorations typographiques fines
+\usepackage{tgheros}            % Police sans-serif moderne (TeX Gyre Heros)
+
+%------------------------------------------------------------------------------
+% MISE EN PAGE ET GRAPHIQUES
+%------------------------------------------------------------------------------
+\usepackage{graphicx}           % Insertion d'images
+\usepackage{tikz}               % Dessin vectoriel
+\usetikzlibrary{calc}           % Extensions de calcul pour TikZ
+\usepackage{float}              % Contrôle du positionnement (option [H])
+\usepackage{fontawesome5}       % Icônes vectorielles
+
+%------------------------------------------------------------------------------
+% GESTION DES AVERTISSEMENTS
+%------------------------------------------------------------------------------
+\usepackage{silence}            % Pour désactiver certains avertissements
+\WarningFilter{minitoc(hints)}{The titlesec package is loaded}
+\WarningFilter{minitoc(hints)}{Some hints have been written}
+
+%------------------------------------------------------------------------------
+% TABLEAUX ET FIGURES
+%------------------------------------------------------------------------------
+\usepackage{booktabs,array}     % Tableaux professionnels
+\usepackage{siunitx}            % Formatage des unités
+% CORRECTION: Déplacé caption avant minitoc
+\usepackage{caption}            % Personnalisation des légendes
+\usepackage{subcaption}         % Pour les sous-figures
+
+%------------------------------------------------------------------------------
+% TABLES DES MATIÈRES
+%------------------------------------------------------------------------------
+\usepackage{minitoc}            % Tables des matières par chapitre
+\setcounter{minitocdepth}{2}    % Profondeur (jusqu'aux sous-sections)
+\setlength{\mtcindent}{0pt}     % Pas d'indentation 
+\renewcommand{\mtcfont}{\small\rmfamily}       % Police mini-TOC
+\renewcommand{\mtcSfont}{\small\rmfamily}      % Police titres mini-TOC
+
+%------------------------------------------------------------------------------
+% FORMATAGE ET STYLES
+%------------------------------------------------------------------------------
+\usepackage{titlesec}           % Personnalisation des titres
+\usepackage{xcolor}             % Gestion des couleurs
+\usepackage{fancyhdr}           % En-têtes et pieds de page personnalisés
+
+%------------------------------------------------------------------------------
+% CODE ET BOÎTES
+%------------------------------------------------------------------------------
+\usepackage{listings}           % Affichage de code source
+\usepackage{tcolorbox}          % Boîtes colorées avancées
+\tcbuselibrary{listings,skins,breakable}   % Extensions de tcolorbox
+
+%------------------------------------------------------------------------------
+% LIENS ET RÉFÉRENCES
+%------------------------------------------------------------------------------
+\usepackage[hidelinks,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage{bookmark}           % Améliorations des signets PDF
+\usepackage{etoolbox}           % Macros utiles pour patcher des commandes

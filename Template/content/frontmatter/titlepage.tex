@@ -1,0 +1,69 @@
+%==============================================================================
+% PAGE DE TITRE
+%==============================================================================
+% Personnalisez cette page pour votre document
+%==============================================================================
+
+\begin{titlepage}
+    \thispagestyle{empty}
+    
+    %------------------------------------------------------------------------------
+    % CADRE DÉCORATIF
+    %------------------------------------------------------------------------------
+    \begin{tikzpicture}[remember picture, overlay]
+      \draw[line width=1pt]
+        ($(current page.north west)+(1cm,-1cm)$) rectangle
+        ($(current page.south east)+(-1cm,1cm)$);
+    \end{tikzpicture}
+    
+    %------------------------------------------------------------------------------
+    % LOGOS
+    %------------------------------------------------------------------------------
+    \begin{center}
+      \includegraphics[height=1.5cm]{assets/figures/logos/Logo_Univ_Rennes.png}\hspace{1cm}%
+      \includegraphics[height=1.5cm]{assets/figures/logos/Logo_EBR.png}\hspace{1cm}%
+      \includegraphics[height=1.5cm]{assets/figures/logos/Logo_Fondation_Rennes.png}
+      \vspace{2cm}
+  
+      %------------------------------------------------------------------------------
+      % TITRE ET SOUS-TITRE
+      %------------------------------------------------------------------------------
+      {\Huge\textbf{Suivi de Thèse en Modélisation Hydrogéologique}}\\[0.5cm]
+      {\Large Documentation de Code et Avancées Scientifiques}
+      \vspace{1.5cm}
+  
+      %------------------------------------------------------------------------------
+      % ÉTAT DU DOCUMENT
+      %------------------------------------------------------------------------------
+      {\Large\textcolor{red}{\textbf{Version Brouillon – Document de Travail}}}
+      \vspace{2cm}
+  
+      %------------------------------------------------------------------------------
+      % INFORMATIONS SUR L'AUTEUR
+      %------------------------------------------------------------------------------
+      {\large
+        \textbf{Auteur :} Bastien Boivin\\[0.3cm]
+        \textbf{Email (pro) :} bastien.boivin@univ-rennes.fr\\
+        \textbf{Email (perso) :} bastien.boivin@proton.me\\[1cm]
+      }
+  
+      %------------------------------------------------------------------------------
+      % ÉQUIPE ENCADRANTE
+      %------------------------------------------------------------------------------
+      \noindent
+      \begin{flushleft}
+        \textbf{Directeur de thèse :}\\
+        Jean-Raynald de Dreuzy, Directeur de recherche CNRS, Géosciences Rennes\\[0.5cm]
+        \textbf{Co-directeur de thèse :}\\
+        Luc Aquilina, Professeur des universités, Géosciences Rennes\\[0.5cm]
+        \textbf{Partenaire industriel :}\\
+        Jean-Yves Gaubert, Directeur du pôle R\&D, Eau du Bassin Rennais\\
+      \end{flushleft}
+  
+      %------------------------------------------------------------------------------
+      % PIED DE PAGE AVEC DATE
+      %------------------------------------------------------------------------------
+      \vfill
+      Rennes, \today
+    \end{center}
+  \end{titlepage}
