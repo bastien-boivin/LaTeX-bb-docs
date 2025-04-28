@@ -11,17 +11,26 @@
 \usepackage{tikz}
 \usetikzlibrary{calc}
 
+% ---------- MINI-TABLES DES MATIÈRES ----------
+\usepackage{minitoc}
+\setcounter{minitocdepth}{2}
+\setlength{\mtcindent}{0pt}
+\renewcommand{\mtcfont}{\small\rmfamily}
+\renewcommand{\mtcSfont}{\small\rmfamily}
+
 % ---------- MARGES ----------
 \usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2cm,right=2cm]{geometry}
 
 % ---------- STYLE DES CHAPITRES ----------
 \usepackage{titlesec}
 \titleformat{\chapter}[display]
-  {\bfseries\Huge\centering}
-  {\rule{\textwidth}{1pt}}
-  {0pt}
-  {\vspace{1cm}\Huge Chapitre \thechapter\vspace{1cm}}
-  [\rule{\textwidth}{1pt}]
+  {\normalfont\bfseries\Huge\centering}
+  {\rule{\textwidth}{1pt}\vspace{1cm}\Huge\chaptertitlename~\thechapter}
+  {1cm}
+  {\Huge}
+  [\vspace{0.5cm}\rule{\textwidth}{1pt}]
+
+\titlespacing*{\chapter}{0pt}{0pt}{50pt}
 
 % ---------- EN-TÊTES ET PIEDS DE PAGE ----------
 \usepackage{fancyhdr}
@@ -67,6 +76,9 @@
   frame=none,
   captionpos=b,
   tabsize=4,
+  inputencoding=utf8,
+  extendedchars=true,
+  literate={é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {à}{{\`a}}1 {ç}{{\c{c}}}1
 }
 \tcbset{
   pythonlisting/.style={
@@ -79,20 +91,10 @@
 }
 \newtcblisting{pythoncode}[1][]{pythonlisting, title=#1}
 
-% Définir le texte pour que LastPage fonctionne
-\def\lastpage@putlabel{\label{LastPage}}
-\AtEndDocument{\clearpage\lastpage@putlabel}
-\def\lastpage@fmt#1{#1}
-\def\lastpage#1{%
-  \expandafter\ifx\csname r@LastPage\endcsname\relax
-  ??%
-  \else
-  \lastpage@fmt{\pageref{LastPage}}%
-  \fi
-}
-
 % ---------- DÉBUT DU DOCUMENT ----------
 \begin{document}
+
+\dominitoc % Activer les mini-tables des matières
 
 % --- Page de garde ---
 \input{sections/page_de_garde.tex}
