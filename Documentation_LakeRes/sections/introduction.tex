@@ -1,8 +1,10 @@
 % sections/introduction.tex
 \chapter{Introduction}
-\minitoc % Mini-table des matières du chapitre
 
-\vspace{1cm} % Espace après la mini-table des matières
+% Mini-table des matières du chapitre, sans autre contenu
+\minitoc
+
+\newpage
 
 \section{Objectif de la thèse}
 Cette thèse vise à développer des modèles hydrogéologiques avancés pour caractériser et prédire les flux d'eau souterraine dans le bassin rennais. Les objectifs principaux incluent l'intégration des données de terrain, la modélisation multi-échelle des écoulements, et l'évaluation de l'impact des changements climatiques sur les ressources en eau.
@@ -14,7 +16,7 @@ La compréhension des flux hydrogéologiques est essentielle pour la gestion dur
 
 Le code suivant montre un exemple simple de classe Python avec coloration syntaxique adaptée:
 
-\begin{pythoncode}[Une petite classe Python]
+\begin{pythoncode}
 class Compteur:
     def __init__(self, start=0):
         self.count = start        # <- 'self' est colore
