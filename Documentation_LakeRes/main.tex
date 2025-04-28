@@ -1,0 +1,103 @@
+% Document principal de suivi de thèse et documentation de code
+\documentclass[12pt,a4paper]{report}
+
+% ---------- PACKAGES DE BASE ----------
+%\UseRawInputEncoding % Supprimé car potentiellement conflictuel avec inputenc[utf8]
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+% ---------- MARGES ----------
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2cm,right=2cm]{geometry}
+
+% ---------- STYLE DES CHAPITRES ----------
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\bfseries\Huge\centering}
+  {\rule{\textwidth}{1pt}}
+  {0pt}
+  {\vspace{1cm}\Huge Chapitre \thechapter\vspace{1cm}}
+  [\rule{\textwidth}{1pt}]
+
+% ---------- EN-TÊTES ET PIEDS DE PAGE ----------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{14.9pt}
+\usepackage{xcolor}
+\fancyhead[L]{\textcolor{gray}{Bastien Boivin}}
+\fancyhead[R]{\textcolor{gray}{Suivi de Thèse}}
+\fancyfoot[L]{\textcolor{gray}{Brouillon}}
+\fancyfoot[R]{\textcolor{gray}{2025}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\headrule}{\color{gray}\hrule height \headrulewidth}
+\renewcommand{\footrule}{\color{gray}\hrule height \footrulewidth}
+
+% ---------- STYLE POUR CODE PYTHON ----------
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{listings,skins}
+\definecolor{gdbg}{HTML}{0D1117}
+\definecolor{gdfg}{HTML}{C9D1D9}
+\definecolor{gdcomment}{HTML}{8B949E}
+\definecolor{kdkeyword}{HTML}{FF7B72}
+\definecolor{gdstring}{HTML}{A5D6FF}
+\definecolor{gdidentifier}{HTML}{7DD7A6}
+\definecolor{gdself}{HTML}{D2B48C}
+\lstdefinestyle{githubdark}{%
+  language=Python,
+  backgroundcolor=\color{gdbg},
+  basicstyle=\ttfamily\small\color{gdfg},
+  keywordstyle=\color{kdkeyword}\bfseries,
+  commentstyle=\color{gdcomment}\itshape,
+  stringstyle=\color{gdstring},
+  identifierstyle=\color{gdidentifier},
+  emph={self}, emphstyle=\color{gdself}\bfseries,
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\tiny\color{gdcomment},
+  numbersep=6pt,
+  breaklines=true,
+  frame=none,
+  captionpos=b,
+  tabsize=4,
+}
+\tcbset{
+  pythonlisting/.style={
+    enhanced, breakable, sharp corners=downhill,
+    boxrule=0pt, colback=gdbg, colframe=gdbg,
+    left=3pt, right=3pt, top=3pt, bottom=3pt,
+    listing only,
+    listing options={style=githubdark},
+  }
+}
+\newtcblisting{pythoncode}[1][]{pythonlisting, title=#1}
+
+% ---------- DÉBUT DU DOCUMENT ----------
+\begin{document}
+
+% \usepackage{minitoc} et commandes associées supprimées car incompatibles avec titlesec
+
+% --- Page de garde ---
+\input{sections/page_de_garde.tex}
+
+% --- Table des matières générale ---
+\tableofcontents
+
+% --- Style fancyhdr pour la suite ---
+\pagestyle{fancy}
+
+% --- Contenu principal ---
+
+\input{sections/introduction.tex}
+
+% label dernière page
+% Compiler deux fois pour les références (LastPage, TOC, etc.)
+
+\end{document}
