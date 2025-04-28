@@ -2,7 +2,6 @@
 \documentclass[12pt,a4paper]{report}
 
 % ---------- PACKAGES DE BASE ----------
-%\UseRawInputEncoding % Supprimé car potentiellement conflictuel avec inputenc[utf8]
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[french]{babel}
@@ -34,6 +33,7 @@
 \fancyhead[R]{\textcolor{gray}{Suivi de Thèse}}
 \fancyfoot[L]{\textcolor{gray}{Brouillon}}
 \fancyfoot[R]{\textcolor{gray}{2025}}
+\fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
 \renewcommand{\headrule}{\color{gray}\hrule height \headrulewidth}
@@ -79,10 +79,20 @@
 }
 \newtcblisting{pythoncode}[1][]{pythonlisting, title=#1}
 
+% Définir le texte pour que LastPage fonctionne
+\def\lastpage@putlabel{\label{LastPage}}
+\AtEndDocument{\clearpage\lastpage@putlabel}
+\def\lastpage@fmt#1{#1}
+\def\lastpage#1{%
+  \expandafter\ifx\csname r@LastPage\endcsname\relax
+  ??%
+  \else
+  \lastpage@fmt{\pageref{LastPage}}%
+  \fi
+}
+
 % ---------- DÉBUT DU DOCUMENT ----------
 \begin{document}
-
-% \usepackage{minitoc} et commandes associées supprimées car incompatibles avec titlesec
 
 % --- Page de garde ---
 \input{sections/page_de_garde.tex}
@@ -94,10 +104,6 @@
 \pagestyle{fancy}
 
 % --- Contenu principal ---
-
 \input{sections/introduction.tex}
-
-% label dernière page
-% Compiler deux fois pour les références (LastPage, TOC, etc.)
 
 \end{document}

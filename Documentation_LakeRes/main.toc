@@ -1,5 +1,0 @@
-\babel@toc {french}{}\relax 
-\contentsline {chapter}{\numberline {1}Introduction}{2}{}%
-\contentsline {section}{\numberline {1.1}Objectif de la thèse}{3}{}%
-\contentsline {section}{\numberline {1.2}Contexte scientifique}{3}{}%
-\contentsline {section}{\numberline {1.3}Exemples de code moderne}{3}{}%
