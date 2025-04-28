@@ -1,6 +1,6 @@
 # Guide d'utilisation du template LaTeX Documentation_LakeRes
 
-Ce guide vous explique comment utiliser et personnaliser le template LaTeX pour votre documentation.
+Ce guide vous explique comment utiliser et personnaliser le template LaTeX pour un rapport.
 
 ## 1. Structure des fichiers
 
@@ -19,7 +19,8 @@ Documentation_LakeRes/
 │   ├── code-style.tex        # Configuration pour le code
 │   ├── callouts.tex          # Boîtes d'information
 │   ├── figures.tex           # Configuration des figures
-│   └── commands.tex          # Commandes personnalisées
+│   ├── commands.tex          # Commandes personnalisées
+│   └── bibliography.tex      # Configuration de la bibliographie
 ├── content/                  # Contenu du document
 │   ├── frontmatter/          # Pages préliminaires
 │   │   ├── titlepage.tex     # Page de garde
@@ -32,7 +33,8 @@ Documentation_LakeRes/
 └── assets/                   # Ressources
     ├── figures/              # Figures et images
     │   └── logos/            # Logos
-    └── bibliography/         # Bibliographie (à créer)
+    └── bibliography/         # Bibliographie
+        └── references.bib    # Fichier BibTeX contenant les références
 ```
 
 ## 2. Démarrage rapide
@@ -57,6 +59,11 @@ Pour des options supplémentaires :
 ./compile.sh --help
 ```
 
+Pour compiler en mode surveillance (recompilation automatique à chaque changement) :
+```bash
+./compile.sh --watch --view
+```
+
 ## 3. Personnalisation de base
 
 ### Informations générales
@@ -69,12 +76,13 @@ Modifiez les informations personnelles :
    - Les informations d'auteur
    - Les informations d'encadrement
 
-2. **En-têtes et pieds de page** : Dans `config/headers.tex`, personnalisez :
+2. **En-têtes et pieds de page** : Dans `main.tex`, personnalisez les commandes suivantes :
    ```latex
-   \fancyhead[L]{\textcolor{gray}{Votre Nom}}
-   \fancyhead[R]{\textcolor{gray}{Titre Court}}
-   \fancyfoot[L]{\textcolor{gray}{Version}}
-   \fancyfoot[R]{\textcolor{gray}{2025}}
+   % Définition des informations du document (utile pour les en-têtes)
+   \newcommand{\docTitle}{Documentation Scientifique}
+   \newcommand{\docAuthor}{Nom}
+   \newcommand{\docVersion}{Version 1.0}
+   \newcommand{\docYear}{2025}
    ```
 
 ### Adaptation visuelle
@@ -86,11 +94,158 @@ Modifiez les informations personnelles :
 
 2. **Style des chapitres** : Personnalisez l'apparence des titres de chapitres dans `config/chapter-style.tex`
 
-## 4. Utilisation des fonctionnalités
+## 4. Gestion des figures et tableaux
+
+### Insertion de figures
+
+Plusieurs méthodes sont disponibles pour insérer des figures :
+
+#### Méthode standard
+
+```latex
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{assets/figures/image.png}
+    \caption{Description de l'image}
+    \label{fig:image}
+\end{figure}
+```
+
+#### Avec la commande simplifiée
+
+```latex
+\centeredfigure[0.6]{assets/figures/image.png}{Description de l'image}
+```
+
+Cette commande crée automatiquement un label basé sur le nom du fichier (ex: `fig:image.png`).
+
+#### Pour deux figures côte à côte
+
+```latex
+\twofigures{image1.png}{Légende 1}{image2.png}{Légende 2}{Légende générale}
+```
+
+Cela génère également des labels automatiques : `fig:image1.png`, `fig:image2.png` et `fig:image1.png-image2.png`.
+
+#### Pour trois figures côte à côte
+
+```latex
+\threefigures{image1.png}{Légende 1}{image2.png}{Légende 2}{image3.png}{Légende 3}{Légende générale}
+```
+
+### Création de tableaux
+
+#### Avec l'environnement amélioré
+
+```latex
+\begin{nicetable}{Titre du tableau}{tab:identifiant}{lcc}
+    \tableheader{Colonne 1} & \tableheader{Colonne 2} & \tableheader{Colonne 3} \\
+    \midrule
+    Donnée 1 & 123 & 456 \\
+    Donnée 2 & 789 & 012 \\
+\end{nicetable}
+```
+
+#### Avec le package siunitx pour aligner les nombres
+
+```latex
+\begin{table}[htbp]
+  \centering
+  \caption{Exemple avec nombres alignés}
+  \label{tab:exemple-nombres}
+  \begin{tabular}{l S[table-format=2.1] S[table-format=3.2]}
+    \toprule
+    {Paramètre} & {Valeur 1} & {Valeur 2} \\
+    \midrule
+    Alpha & 10.5 & 105.00 \\
+    Beta & 20.7 & 207.50 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+```
+
+## 5. Système de références et citations
+
+### Références aux éléments du document
+
+Le template propose des commandes simplifiées pour référencer les différents éléments :
+
+```latex
+\figref{image}          % Référence à Figure X
+\tabref{tableau}        % Référence à Tableau X
+\eqref{equation}        % Référence à Équation X
+\secref{section}        % Référence à Section X
+```
+
+Exemple d'utilisation :
+```latex
+Comme montré dans \figref{logo_rennes}, le processus hydrologique...
+Les résultats de conductivité sont présentés dans \tabref{conductivite}.
+Voir \secref{exemples-de-figures} pour plus de détails sur les visualisations.
+```
+
+### Gestion de la bibliographie
+
+Le template utilise BibLaTeX pour gérer les références bibliographiques.
+
+#### Ajouter des références au fichier BibTeX
+
+Toutes les références doivent être ajoutées au fichier `assets/bibliography/references.bib` dans le format BibTeX approprié. Exemple :
+
+```bibtex
+@article{Aquilina2012,
+  author  = {Aquilina, Luc and Vergnaud-Ayraud, Virginie and Labasque, Thierry and Bour, Olivier},
+  title   = {Nitrate dynamics in agricultural catchments},
+  journal = {Science of The Total Environment},
+  year    = {2012},
+  volume  = {435-436},
+  pages   = {167--178},
+  doi     = {10.1016/j.scitotenv.2012.06.028}
+}
+
+@book{Bear2018,
+  author    = {Bear, Jacob and Cheng, Alexander H.-D.},
+  title     = {Modeling Groundwater Flow and Contaminant Transport},
+  publisher = {Springer},
+  year      = {2018},
+  address   = {Cham},
+  edition   = {2}
+}
+```
+
+#### Citer des références dans le texte
+
+Plusieurs méthodes de citation sont disponibles :
+
+```latex
+% Citation simple entre parenthèses
+\parencite{Aquilina2012}  % Résultat : (Aquilina, 2012)
+
+% Citation intégrée dans le texte
+\textcite{Bear2018} a démontré que...  % Résultat : Bear (2018) a démontré que...
+
+% Citations multiples
+\parencite{Aquilina2012,Bear2018,Roques2013}  % Résultat : (Aquilina, 2012; Bear, 2018; Roques, 2013)
+
+% Citation avec page
+\parencite[p.~167]{Marsily1986}  % Résultat : (Marsily, 1986, p. 167)
+```
+
+#### Génération de la bibliographie
+
+La bibliographie est générée automatiquement à partir des références citées dans le document. Dans `main.tex`, la section suivante génère la bibliographie :
+
+```latex
+\clearpage
+\printbibliography[heading=bibliography, title=Références bibliographiques]
+```
+
+## 6. Insertion de code et formules
 
 ### Insertion de code
 
-Pour insérer un bloc de code Python :
+#### Bloc de code Python
+
 ```latex
 \begin{pythoncode}[Titre optionnel]
 def hello_world():
@@ -98,9 +253,13 @@ def hello_world():
 \end{pythoncode}
 ```
 
-Pour du code en ligne : `\inlinecode{print("Hello")}`
+#### Code en ligne
 
-### Utilisation des chemins de fichiers
+```latex
+\inlinecode{print("Hello")}
+```
+
+### Chemins de fichiers stylisés
 
 ```latex
 \filepath{/chemin/vers/fichier.txt}       % Fichier simple
@@ -108,7 +267,40 @@ Pour du code en ligne : `\inlinecode{print("Hello")}`
 \urlpath{https://example.com}             % URL avec icône
 ```
 
-### Création de callouts (boîtes d'information)
+### Équations et formules
+
+#### Équation simple
+
+```latex
+\begin{equation}
+E = mc^2
+\end{equation}
+```
+
+#### Équation avec label pour référence
+
+```latex
+\begin{equation}
+\label{eq:einstein}
+E = mc^2
+\end{equation}
+
+Selon l'équation \eqref{einstein}, l'énergie est proportionnelle à la masse.
+```
+
+#### Symboles mathématiques prédéfinis
+
+Le template définit des commandes pour certains symboles couramment utilisés en hydrogéologie :
+
+```latex
+\porosity      % Porosité (symbole phi)
+\permeability  % Perméabilité (symbole K)
+\conductivity  % Conductivité (symbole sigma)
+```
+
+## 7. Boîtes d'information (Callouts)
+
+Le template propose plusieurs types de boîtes d'information pour mettre en évidence des contenus importants :
 
 ```latex
 \begin{InfoBox}
@@ -128,50 +320,7 @@ Ce point est crucial.
 \end{ImportantBox}
 ```
 
-### Insertion de figures
-
-Méthode standard :
-```latex
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.7\textwidth]{assets/figures/image.png}
-    \caption{Description de l'image}
-    \label{fig:image}
-\end{figure}
-```
-
-Avec la commande simplifiée :
-```latex
-\centeredfigure[0.6]{assets/figures/image.png}{Description de l'image}
-```
-
-Pour deux figures côte à côte :
-```latex
-\twofigures{image1.png}{Légende 1}{image2.png}{Légende 2}{Légende générale}
-```
-
-### Création de tableaux
-
-Avec l'environnement amélioré :
-```latex
-\begin{nicetable}{Titre du tableau}{tab:identifiant}{lcc}
-    \tableheader{Colonne 1} & \tableheader{Colonne 2} & \tableheader{Colonne 3} \\
-    \midrule
-    Donnée 1 & 123 & 456 \\
-    Donnée 2 & 789 & 012 \\
-\end{nicetable}
-```
-
-### Références simplifiées
-
-```latex
-\figref{image}          % Référence à Figure X
-\tabref{tableau}        % Référence à Tableau X
-\eqref{equation}        % Référence à Équation X
-\secref{section}        % Référence à Section X
-```
-
-## 5. Ajout de nouveaux chapitres
+## 8. Ajout de nouveaux chapitres
 
 1. Créez un nouveau fichier dans `content/chapters/`, par exemple `chapitre1.tex`
 2. Commencez-le par :
@@ -181,6 +330,11 @@ Avec l'environnement amélioré :
    \newpage
    
    \section{Première section}
+   \label{sec:premiere-section}  % Important pour les références
+   Contenu...
+   
+   \subsection{Sous-section}
+   \label{sec:sous-section}
    Contenu...
    ```
 3. Ajoutez-le dans `main.tex` :
@@ -188,13 +342,15 @@ Avec l'environnement amélioré :
    \input{content/chapters/chapitre1.tex}
    ```
 
-## 6. Dépannage courant
+## 9. Dépannage courant
 
 ### Problèmes de compilation
 
 - **Erreurs de référence non résolue** : Compilez plusieurs fois avec `./compile.sh`
-- **Figures non trouvées** : Vérifiez les chemins relatifs dans vos références à des images
-- **Packages manquants** : Installez les packages manquants avec votre gestionnaire LaTeX
+- **Figures non trouvées** : Vérifiez les chemins relatifs des références aux images
+- **Bibliographie non mise à jour** : Assurez-vous que biber est installé et exécuté (le script compile.sh s'en charge)
+- **Page vide à la fin** : Si gênant, modifiez l'option de classe en `\documentclass[12pt,a4paper,openany]{report}`
+- **Double entrée dans la table des matières** : Utilisez l'option `notoc` dans `\printbibliography`
 
 ### Nettoyage des fichiers temporaires
 
@@ -202,7 +358,7 @@ Avec l'environnement amélioré :
 ./compile.sh --clean
 ```
 
-## 7. Conseils avancés
+## 10. Conseils avancés
 
 ### Ajout d'un style de code pour un nouveau langage
 
@@ -239,10 +395,22 @@ Pour ajouter un nouveau type de callout, dans `config/callouts.tex` :
 }
 ```
 
-### Mode de surveillance pendant l'édition
+### Unités avec siunitx
 
-Pour recompiler automatiquement à chaque changement :
+Le template définit des commandes pour les unités courantes :
 
-```bash
-./compile.sh --watch --view
+```latex
+\ms       % Mètres par seconde
+\cms      % Centimètres par seconde
+\m        % Mètre
+\cm       % Centimètre
+\mm       % Millimètre
+\km       % Kilomètre
+\sqkm     % Kilomètre carré
+\cubicm   % Mètre cube
+```
+
+Exemple d'utilisation :
+```latex
+La vitesse d'écoulement est de 2,5\ms dans les zones fracturées.
 ```

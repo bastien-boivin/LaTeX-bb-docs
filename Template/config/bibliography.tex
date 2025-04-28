@@ -1,5 +1,9 @@
 %==============================================================================
 % CONFIGURATION DE LA BIBLIOGRAPHIE
+% Ce fichier configure la bibliographie pour le document.
+% Il utilise le package biblatex pour gérer les références bibliographiques.
+% Il est important de s'assurer que le fichier .bib est correctement configuré
+% et que les références sont bien formatées.
 %==============================================================================
 \usepackage[
   backend=biber,
@@ -127,7 +131,6 @@
 
 \defbibheading{bibliography}[\bibname]{%
   \chapter*{#1}%
-  \markboth{#1}{#1}%
-  \addcontentsline{toc}{chapter}{#1}%
+  \markboth{#1}{#1}% 
 }
 \makeatother

@@ -21,25 +21,6 @@
 \newcommand{\secref}[1]{Section~\ref{sec:#1}}
 
 %------------------------------------------------------------------------------
-% ABRÉVIATIONS ET TERMES FRÉQUEMMENT UTILISÉS
-%------------------------------------------------------------------------------
-% Utilisez ces commandes pour garantir une apparence cohérente et permettre
-% des changements globaux faciles
-
-% Termes scientifiques spécifiques à votre domaine
-\newcommand{\waterflow}{flux d'eau souterraine}
-\newcommand{\aquifer}{aquifère}
-\newcommand{\flowmodel}{modèle d'écoulement}
-
-% Acronymes avec définition à la première occurrence
-\newcommand{\EBR}{EBR\xspace}  % Eau du Bassin Rennais
-\newcommand{\BRGM}{BRGM\xspace} % Bureau de Recherches Géologiques et Minières
-\newcommand{\SIG}{SIG\xspace}   % Système d'Information Géographique
-
-% Pour utiliser xspace qui ajoute automatiquement l'espace après les commandes
-\usepackage{xspace}
-
-%------------------------------------------------------------------------------
 % MISE EN ÉVIDENCE ET FORMATAGE
 %------------------------------------------------------------------------------
 % Surlignage de texte avec couleur personnalisable
@@ -73,13 +54,11 @@
 % ENVIRONNEMENTS ET BOÎTES PERSONNALISÉS
 %------------------------------------------------------------------------------
 % Environnement pour équation avec étiquette et référence automatique
-% CORRECTION: Renommé de eqnarray à myeqnarray car eqnarray existe déjà
 \newenvironment{myeqnarray}[1]
   {\begin{equation}\label{eq:#1}}
   {\end{equation}}
 
 % Bloc de texte encadré simple
-% CORRECTION: Renommé de framebox à textframebox car framebox existe déjà
 \newcommand{\textframebox}[1]{%
   \begin{center}
     \fbox{\begin{minipage}{0.9\textwidth}#1\end{minipage}}

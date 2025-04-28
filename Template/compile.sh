@@ -67,7 +67,7 @@ clean_files() {
 
 # Compiler le document
 compile_document() {
-  local COMPILE_CMD="pdflatex"
+  local COMPILE_CMD="pdflatex -no-shell-escape"
   local COMPILE_OPTS="-interaction=nonstopmode -output-directory=$OUT_DIR"
   
   if [ $SILENT_MODE -eq 1 ]; then
