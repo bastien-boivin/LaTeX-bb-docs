@@ -1,12 +1,8 @@
-class Compteur:
-    def __init__(self, start=0):
-        self.count = start        # <- 'self' est coloré
-    def increment(self):
-        self.count += 1
-        print(f"Valeur : {self.count}")
-
-# Usage
-if __name__ == "__main__":
-    c = Compteur()
-    for _ in range(3):
-        c.increment()
+    clean_root = [dirname(root_dir), self.watershed_folder]
+    for clean_root in clean_root:
+        for dirpath, dirnames, filenames in os.walk(clean_root):
+            print(dirpath, filenames, dirnames)
+            for filename in filenames:
+                if filename.endswith('.chk'):
+                    os.remove(os.path.join(dirpath, filename))
+                    print(f"Delete {filename} file")

@@ -1,0 +1,31 @@
+%==============================================================================
+% CHAPITRE DU CODE EBR
+%==============================================================================
+
+\chapter{Code - EBR}
+\label{chap:code_ebr}
+
+% Mini-table des matières du chapitre
+\minitableofcontents
+
+\newpage
+
+%------------------------------------------------------------------------------
+% CONTENU
+%------------------------------------------------------------------------------
+
+\section{App EBR commun.py}
+\label{sec:app_ebr_commun}
+
+\subsection{Chargements des bibliothèques, modules et du dossier racines}
+\label{sec:chargements_bibliotheques_modules_dossier_racines}
+
+Cette section permet l'importation de l'ensemble des librairies utilisées par le code, dont celles de Python, celles de librairies externes et les codes d'HydroModPy fonctionnant en POO (programmation orientée objet). Ces différentes librairies sont toutes incluses dans l'environnement \inlinecode{Hydromodpy-0.1} préalablement installé.
+
+
+En amont de ces librairies, une section \inlinecode{# Filtrer les avertissements} est à renseigner à chaque début de code afin que les alertes de \inlinecode{DeprecationWarnings} ne s'affichent pas, voir \ref{sec:deprecationwarnings}.
+
+\subsection{LogManager}
+\label{sec:logmanager-ebr}
+
+La \inlinecode{class LogManager} permet de gérer l'interface verbale entre l'utilisateur et le code, en faisant remonter des logs selon différentes classes avec plus ou moins de précisions et de messages selon le mode choisi. Pour paramétrer le \inlinecode{LogManager}, voir la section \ref{sec:logmanager}.

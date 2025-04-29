@@ -5,7 +5,7 @@
 % avec support pour code source, figures, tableaux et éléments explicatifs
 %==============================================================================
 
-\documentclass[12pt,a4paper]{report}
+\documentclass[11pt,a4paper]{report}
 
 %==============================================================================
 % IMPORTATION DES FICHIERS DE CONFIGURATION
@@ -20,6 +20,7 @@
 \input{config/figures.tex}       % Gestion des figures
 \input{config/commands.tex}      % Commandes personnalisées
 \input{config/bibliography.tex}  % Configuration de la bibliographie
+\input{config/toc-style.tex} 
 
 % Définition des informations du document (utile pour les en-têtes)
 \newcommand{\docTitle}{Documentation Scientifique}
@@ -38,8 +39,6 @@
 %==============================================================================
 \begin{document}
 
-% Activation des mini-tables des matières
-\dominitoc
 
 %------------------------------------------------------------------------------
 % PAGES PRÉLIMINAIRES
@@ -59,9 +58,19 @@
 %------------------------------------------------------------------------------
 \input{content/chapters/introduction.tex}
 
+\input{content/chapters/bibliographie.tex}
+
+\input{content/chapters/donnees.tex}
+
+\input{content/chapters/Code-EBR.tex}
+
+\input{content/chapters/hydromodpy.tex}
+
+\input{content/chapters/patch.tex}
+
 %------------------------------------------------------------------------------
 % BIBLIOGRAPHIE
 %------------------------------------------------------------------------------
-\printbibliography[heading=bibliography, title=Références bibliographiques]
+%\printbibliography[heading=bibliography, title=Références bibliographiques]
 
 \end{document}

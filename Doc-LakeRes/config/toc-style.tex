@@ -1,0 +1,17 @@
+%==============================================================================
+% STYLE POUR LES TABLES DES MATIÈRES
+%==============================================================================
+
+% Définition d'une mini-table des matières simple
+\newcommand{\minitableofcontents}{%
+  \vspace{0.5cm}%
+  \noindent\rule{\linewidth}{0.4pt}%
+  \vspace{0.5cm}%
+  {%
+    \startcontents[chapters]%
+    \printcontents[chapters]{}{1}{\setcounter{tocdepth}{2}}%
+  }%
+  \vspace{0.5cm}%
+  \noindent\rule{\linewidth}{0.4pt}%
+  \vspace{0.5cm}%
+}

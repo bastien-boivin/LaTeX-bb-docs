@@ -1,0 +1,139 @@
+%==============================================================================
+% CHAPITRE D'HYDROMODPY
+%==============================================================================
+
+\chapter{HydroModPy}
+\label{chap:hydromodpy}
+
+% Mini-table des matieres du chapitre
+\minitableofcontents
+
+\newpage
+
+%------------------------------------------------------------------------------
+% CONTENU
+%------------------------------------------------------------------------------
+
+\section{watershed\_root.py}
+\label{sec:watershed_root_py}
+
+\section{toolbox.py}
+\label{sec:toolbox_py}
+
+\subsection{class LogManager}
+\label{sec:logmanager}
+
+Le \inlinecode{LogManager} est conçue pour configurer et gérer la journalsiation de l'application de manière flexible et adaptable.
+
+\vspace{1em}
+
+\noindent\textbf{Initialisation du LogManager :}
+Pour intégrer le \inlinecode{LogManager} dans un script, il suffit d'insérer les lignes suivantes :
+
+\begin{pythoncode}[]
+    # Initialisation du LogManager en mode developpement
+    log_manager = toolbox.LogManager( 
+        mode="dev", # Utilisez mode="verbose" pour afficher les logs INFO et superieurs, et mode="quiet" pour afficher les logs WARNING et superieurs 
+        log_dir=root_dir, # Specifiez le repertoire de journalisation 
+        overwrite=False, # Utilisez overwrite=True (par defaut) pour ecraser les fichiers de log existants 
+        verbose_libraries=True # Utilisez verbose_libraries=True pour afficher les logs des bibliotheques (avertissements et superieurs, generalement masques) 
+    )
+\end{pythoncode}
+
+\noindent\textbf{Mode de fonctionnement :}
+\begin{itemize}[leftmargin=1.5cm]
+    \item Mode \inlinecode{dev} :
+    \begin{itemize}
+        \item Console : Affiche tous les messages de niveau DEBUG et supérieur (DEBUG, INFO, WARNING, ERROR, CRITICAL).
+        \item Format : \inlinecode{\%([levelname)s] [\%(name)s] [\%(module)s:\%(lineno)d] \%(message)s}
+    \end{itemize}
+    \item Mode \inlinecode{verbose} :
+    \begin{itemize}
+        \item Console : Affiche tous les messages de niveau INFO et supérieur (INFO, WARNING, ERROR, CRITICAL).
+        \item Format : \inlinecode{\%([levelname)s] \%(message)s}
+    \end{itemize}
+    \item Mode \inlinecode{quiet} :
+    \begin{itemize}
+        \item Console : Affiche uniquement les messages de niveau WARNING et supérieur (WARNING, ERROR, CRITICAL).
+        \item Format : \inlinecode{\%([levelname)s] \%(message)s}
+    \end{itemize}
+\end{itemize}
+
+\vspace{1em}
+
+\noindent\textbf{Gestion des bibliothèques externes :}
+
+Par défaut, le \inlinecode{LogManager} supprime les logs provenant de certianes bbliothèques externes pour éviter un terminal (kernel) surchargé. Voici la liste des bibliothèques dont les logs sont réduits au niveau CRITICAL :
+
+\begin{pythoncode}[]
+    libraries_to_silence = [
+        "fiona", 
+        "rasterio", 
+        "urllib3", 
+        "geopy", 
+        "matplotlib", 
+        "PIL"]
+\end{pythoncode}
+
+Vous pouvez activer les logs des bibliothèques externes en définissant \inlinecode{verbose_libraries=True} lors de l'initialisation. Dans ce cas, les messages de niveau WARNING et supérieur seront affichés pour ces bibliothèques.
+
+\vspace{1em}
+
+\noindent\textbf{Sauvegarde des Logs :}
+
+\begin{itemize}[leftmargin=1.5cm]
+    \item \textbf{Fichier de log} : Un fichier \inlinecode{dev.log} est automatiquement sauvegardé dans le dossier \filepath{dev.log} à la racine du projet.
+    \item \textbf{Format} : Les logs sont enregistrés dans le format \inlinecode{dev} pour inclure la provenance des messages (fichier et numéro de ligne).
+    \item \textbf{Écrasement} : Par défaut, le fichier est écrasé à chaque nouvelle exécution. Pour ajouter les logs successifs, utilisez \inlinecode{overwrite=False}.
+\end{itemize}
+
+\vspace{1em}
+
+\noindent\textbf{Logique des niveaux de Logging :}
+
+Les scripts situés dans \filepath{src/} ont été mis à jour pour respecter la logique suivante :
+\begin{itemize}[leftmargin=1.5cm]
+    \item \inlinecode{logging.debug} : Points d'étape détaillés (peut générer beaucoup de lignes, notamment dans les boucles).
+    \item \inlinecode{logging.info} : Messages classiques équivalents aux \inlinecode{print}.
+    \item \inlinecode{logging.warning} : Avertissements nécessitant une attention particulière de l'utilisateur ou signalant une erreur mineure sans arrêt du code.
+    \item \inlinecode{logging.error} : Erreurs mettant fin à l'exécution du script.
+    \item \inlinecode{logging.critical} : Actuellement non utilisé.
+\end{itemize}
+
+\vspace{1em}
+
+\noindent\textbf{Execptions :}
+
+Certains \inlinecode{print} sont conservés pour des raisons spécifiques :
+\begin{itemize}[leftmargin=1.5cm]
+    \item Affichage du logo d'HydroModPy.
+    \item Décompte des étapes (ex. "Étape 1/51") afin de ne pas surcharger le terminal.
+\end{itemize}
+
+\vspace{1em}
+
+Actuellement, les \inlinecode{print} dans les fichiers d'exécution, comme les exemples, n'ont pas été mis à jour. Il reste à discuter si nous les conservons en tant que \inlinecode{print} ou si nous les remplaçons par des logs de niveau \inlinecode{logging.info()}.
+
+\vspace{1em}
+
+\noindent\textbf{Changement de syntaxe pour le Logging}
+
+La syntaxe utilisée pour les messages de logs a été modifiée, car le module \inlinecode{logging} ne permet pas d'insérer directement plusieurs variables dans une chaîne de caractères, comme c'est possible avec un simple \inlinecode{print} (par exemple : \inlinecode{print("Exemple" + A + B)} ou \inlinecode{print("Exemple", A, B)}). Pour formater les messages dans le contexte de logging, deux approches sont possibles :
+\begin{itemize}[leftmargin=1.5cm]
+    \item Utilisation des f-strings :
+        \begin{itemize}
+            \item \inlinecode{logging.debug(f"Etape : {i} / {len(x)}")}
+        \end{itemize}
+    \item Utilisation des Specificateurs de Format, associés aux variables dans l'ordre :
+        \begin{itemize}
+            \item \inlinecode{logging.debug("Etape : \%s / \%s", i, len(x))}
+                \begin{itemize}
+                    \item Liste des principaux spécificateurs utiles :
+                        \begin{itemize}
+                            \item \inlinecode{\%s} : Pour les chaînes de caractères.
+                            \item \inlinecode{\%d} : Pour les entiers.
+                            \item \inlinecode{\%f} : Pour les nombres à virgule flottante.
+                        \end{itemize}
+                \end{itemize}
+        \end{itemize}
+\end{itemize}

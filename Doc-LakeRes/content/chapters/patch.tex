@@ -1,0 +1,57 @@
+%==============================================================================
+% CHAPITRE DES PATCH
+%==============================================================================
+
+\chapter{Patch}
+\label{chap:patch}
+
+% Mini-table des matières du chapitre
+\minitableofcontents
+
+\newpage
+
+%------------------------------------------------------------------------------
+% CONTENU
+%------------------------------------------------------------------------------
+
+\section{DeprecationWarnings}
+\label{sec:deprecationwarnings}
+
+Les \inlinecode{DeprecationWarning} sont affichés dans le kernel lorsque des méthodes ou définitions d'une bibliothèque Python sont appelées et que ces dernières vont être supprimées dans une prochaine version. HydroModPy étant actuellement basé sur une version 3.8.10 de Python (version actuelle 3.13), beaucoup de \inlinecode{DeprecationWarning} apparaissent. Pour éviter cela, les quatre lignes ci-dessous sont à inclure en début de script. 
+
+\begin{InfoBox}
+    Supprimer l'affichage de ces messages ne pose aucun problème de fonctionnement à l'exécution du code.
+\end{InfoBox}
+
+\begin{pythoncode}[]
+    # Filtrer les avertissements (avant les imports)
+    import warnings
+    warnings.filterwarnings('ignore', category=DeprecationWarning)
+
+    import pkg_resources # A placer apres DeprecationWarning car elle meme obsolète...
+    warnings.filterwarnings('ignore', message='.*pkg_resources.*')
+    warnings.filterwarnings('ignore', message='.*declare_namespace.*')
+\end{pythoncode}
+
+\section{Suppression des fichiers.chk}
+\label{sec:suppression_fichiers_chk}
+
+À ce jour, je n’ai trouvé aucune information dans la bibliographie de Flopy permettant de désactiver la création des fichiers \filepath{*.chk}. Ces fichiers sont générés directement par le solveur et non par Flopy lui-même. Seules des variantes faites maison permettent de contourner la création de ces fichiers. Deux solutions sont donc possibles :
+
+\begin{enumerate}
+    \item La première serait de simplement ajouter ces fichiers dans le \filepath{.gitignore} pour éviter leur synchronisation. 
+    \item Sinon, créer un script qui supprime tous les fichiers se terminant par \filepath{*.chk}, sous la forme d'une fonction \inlinecode{def} dans la \filepath{toolbox}, appelée à la fin des \inlinecode{post-traitements} de \textbf{Modflow} et \textbf{Modpath}.
+\end{enumerate}
+
+\begin{pythoncode}[]
+    clean_root = [dirname(root_dir), self.watershed_folder] 
+    for clean_root in clean_root: 
+        for dirpath, dirnames, filenames in os.walk(clean_root): 
+            print(dirpath, filenames, dirnames) 
+            for filename in filenames: 
+                if filename.endswith('.chk'): 
+                    os.remove(os.path.join(dirpath, filename)) 
+                    print(f"Delete {filename} file") 
+\end{pythoncode}
+
+

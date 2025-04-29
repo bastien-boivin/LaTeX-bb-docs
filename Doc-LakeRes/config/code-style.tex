@@ -13,7 +13,7 @@
 \lstdefinestyle{githubdark}{%
   language=Python,
   backgroundcolor=\color{gdbg},
-  basicstyle=\ttfamily\small\color{gdfg},
+  basicstyle=\ttfamily\fontsize{9}{13}\selectfont\color{gdfg},
   keywordstyle=\color{kdkeyword}\bfseries,
   commentstyle=\color{gdcomment}\itshape,
   stringstyle=\color{gdstring},
@@ -43,7 +43,7 @@
 %------------------------------------------------------------------------------
 % Style pour le code en ligne
 \lstdefinestyle{inlinestyle}{
-  basicstyle=\ttfamily\small,
+  basicstyle=\ttfamily\footnotesize\selectfont, % Taille très petite (plus petite que small)
   backgroundcolor=\color{inlineCodeBg},
   breaklines=true,
   keepspaces=true,
@@ -58,7 +58,7 @@
 % Commande pour code en ligne avec formatage cohérent
 \newcommand{\inlinecode}[1]{%
   \colorbox{inlineCodeBg}{%
-    \lstinline[basicstyle=\ttfamily\small\color{inlineCodeText}]!#1!%
+    \lstinline[basicstyle=\ttfamily\footnotesize\color{inlineCodeText}]!#1!%
   }%
 }
 

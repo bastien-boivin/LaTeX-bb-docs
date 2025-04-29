@@ -41,15 +41,6 @@
 \usepackage{subcaption}         % Pour les sous-figures
 
 %------------------------------------------------------------------------------
-% TABLES DES MATIÈRES
-%------------------------------------------------------------------------------
-\usepackage{minitoc}            % Tables des matières par chapitre
-\setcounter{minitocdepth}{2}    % Profondeur (jusqu'aux sous-sections)
-\setlength{\mtcindent}{0pt}     % Pas d'indentation 
-\renewcommand{\mtcfont}{\small\rmfamily}       % Police mini-TOC
-\renewcommand{\mtcSfont}{\small\rmfamily}      % Police titres mini-TOC
-
-%------------------------------------------------------------------------------
 % FORMATAGE ET STYLES
 %------------------------------------------------------------------------------
 \usepackage{titlesec}           % Personnalisation des titres
@@ -69,3 +60,8 @@
 \usepackage[hidelinks,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
 \usepackage{bookmark}           % Améliorations des signets PDF
 \usepackage{etoolbox}           % Macros utiles pour patcher des commandes
+
+%------------------------------------------------------------------------------
+% TABLES DES MATIÈRES LOCALES
+%------------------------------------------------------------------------------
+\usepackage{titletoc}         % Meilleur contrôle des tables des matières
