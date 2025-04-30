@@ -1,8 +1,0 @@
-    clean_root = [dirname(root_dir), self.watershed_folder]
-    for clean_root in clean_root:
-        for dirpath, dirnames, filenames in os.walk(clean_root):
-            print(dirpath, filenames, dirnames)
-            for filename in filenames:
-                if filename.endswith('.chk'):
-                    os.remove(os.path.join(dirpath, filename))
-                    print(f"Delete {filename} file")

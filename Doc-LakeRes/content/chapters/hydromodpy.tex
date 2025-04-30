@@ -30,7 +30,7 @@ Le \inlinecode{LogManager} est conçue pour configurer et gérer la journalsiati
 \noindent\textbf{Initialisation du LogManager :}
 Pour intégrer le \inlinecode{LogManager} dans un script, il suffit d'insérer les lignes suivantes :
 
-\begin{pythoncode}[]
+\begin{minted}{python}
     # Initialisation du LogManager en mode developpement
     log_manager = toolbox.LogManager( 
         mode="dev", # Utilisez mode="verbose" pour afficher les logs INFO et superieurs, et mode="quiet" pour afficher les logs WARNING et superieurs 
@@ -38,7 +38,7 @@ Pour intégrer le \inlinecode{LogManager} dans un script, il suffit d'insérer l
         overwrite=False, # Utilisez overwrite=True (par defaut) pour ecraser les fichiers de log existants 
         verbose_libraries=True # Utilisez verbose_libraries=True pour afficher les logs des bibliotheques (avertissements et superieurs, generalement masques) 
     )
-\end{pythoncode}
+\end{minted}
 
 \noindent\textbf{Mode de fonctionnement :}
 \begin{itemize}[leftmargin=1.5cm]
@@ -65,15 +65,16 @@ Pour intégrer le \inlinecode{LogManager} dans un script, il suffit d'insérer l
 
 Par défaut, le \inlinecode{LogManager} supprime les logs provenant de certianes bbliothèques externes pour éviter un terminal (kernel) surchargé. Voici la liste des bibliothèques dont les logs sont réduits au niveau CRITICAL :
 
-\begin{pythoncode}[]
+\begin{minted}{python}
     libraries_to_silence = [
         "fiona",
         "rasterio",
         "urllib3",
         "geopy",
         "matplotlib",
-        "PIL"]
-\end{pythoncode}
+        "PIL"
+    ]
+\end{minted}
 
 Vous pouvez activer les logs des bibliothèques externes en définissant \inlinecode{verbose_libraries=True} lors de l'initialisation. Dans ce cas, les messages de niveau WARNING et supérieur seront affichés pour ces bibliothèques.
 

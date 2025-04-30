@@ -1,75 +1,49 @@
 %==============================================================================
-% CONFIGURATION POUR L'AFFICHAGE DU CODE
+% CONFIGURATION POUR L'AFFICHAGE DU CODE AVEC MINTED
 %==============================================================================
 % Ce fichier contient la configuration pour l'affichage du code source
 % Il configure les styles visuels et les environnements de code
 %==============================================================================
-
-%------------------------------------------------------------------------------
-% CONFIGURATION DU STYLE DE CODE PYTHON (GITHUB DARK)
-%------------------------------------------------------------------------------
-% Note: Les couleurs sont définies dans colors.tex
-
-\lstdefinestyle{githubdark}{%
-  language=Python,
-  backgroundcolor=\color{gdbg},
-  basicstyle=\ttfamily\fontsize{9}{13}\selectfont\color{gdfg},
-  keywordstyle=\color{kdkeyword}\bfseries,
-  commentstyle=\color{gdcomment}\itshape,
-  stringstyle=\color{gdstring},
-  identifierstyle=\color{gdidentifier},
-  emph={self},emphstyle=\color{gdself}\bfseries,
-  showstringspaces=false,
-  numbers=left,numberstyle=\tiny\color{gdcomment},numbersep=12pt,
-  breaklines=true,frame=none,captionpos=b,tabsize=4,
-  inputencoding=utf8,extendedchars=true,
-  literate={é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {à}{{\`a}}1 {ç}{{\c{c}}}1
-}
-
-%------------------------------------------------------------------------------
-% ENVIRONNEMENT POUR BLOC DE CODE PYTHON
-%------------------------------------------------------------------------------
-\tcbset{
-  pythonlisting/.style={enhanced,breakable,arc=4pt,boxrule=0pt,
-    colback=gdbg,colframe=gdbg,left=4pt,right=4pt,top=4pt,bottom=4pt,
-    listing only,listing options={style=githubdark},
-  }
-}
-
-\newtcblisting{pythoncode}[1][]{pythonlisting,title=#1}
-
-%------------------------------------------------------------------------------
-% CODE EN LIGNE
-%------------------------------------------------------------------------------
-% Style pour le code en ligne
-\lstdefinestyle{inlinestyle}{
-  basicstyle=\ttfamily\footnotesize\selectfont, % Taille très petite (plus petite que small)
-  backgroundcolor=\color{inlineCodeBg},
+% Configuration de base pour tous les blocs de code
+\setminted{
+  fontsize=\small,
   breaklines=true,
-  keepspaces=true,
-  columns=flexible,
-  showstringspaces=false,
-  showspaces=false
+  autogobble=true,
+  linenos=true,
+  numbersep=5pt,
+  frame=lines,
+  framesep=2mm,
+  style=monokai
 }
 
-% Configuration globale de lstinline
-\lstset{style=inlinestyle}
+% Définir un style Python spécifique
+\setminted[python]{
+  python3=true,
+  tabsize=4,
+  bgcolor=gdbg,
+  fontfamily=tt,
+  fontsize=\footnotesize,
+  numbersep=12pt
+}
 
-% Commande pour code en ligne avec formatage cohérent
+%------------------------------------------------------------------------------
+% CODE EN LIGNE AVEC MINTED - TEXTE COLORÉ SUR FOND GRIS
+%------------------------------------------------------------------------------
+% Définir les couleurs personnalisées
+\definecolor{codeOrange}{HTML}{E8912D}  % Orange pour le texte
+\definecolor{codeBg}{HTML}{F3F3F3}      % Gris clair pour le fond
+
+% Version avec texte orange sur fond gris
 \newcommand{\inlinecode}[1]{%
-  \colorbox{inlineCodeBg}{%
-    \lstinline[basicstyle=\ttfamily\footnotesize\color{inlineCodeText}]!#1!%
-  }%
+  \mintinline[bgcolor=codeBg, fontsize=\footnotesize, formatcom=\color{codeOrange}]{text}{#1}%
 }
-
 %------------------------------------------------------------------------------
 % CHEMINS DE FICHIERS STYLISÉS
 %------------------------------------------------------------------------------
-
 % Chemin de fichier simple
 \newcommand{\filepath}[1]{%
   \colorbox{pathBg}{%
-    \lstinline[basicstyle=\ttfamily\small\color{pathText}]!#1!%
+    \mintinline[fontsize=\small,bgcolor=]{text}{#1}%
   }%
 }
 
@@ -77,7 +51,7 @@
 \newcommand{\folderpath}[1]{%
   \colorbox{pathBg}{%
     \textcolor{folderColor}{\faFolder}\,%
-    \lstinline[basicstyle=\ttfamily\small\color{pathText}]!#1!%
+    \mintinline[fontsize=\small,bgcolor=]{text}{#1}%
   }%
 }
 
@@ -85,6 +59,51 @@
 \newcommand{\urlpath}[1]{%
   \colorbox{urlBg}{%
     \textcolor{linkColor}{\faLink}\,%
-    \lstinline[basicstyle=\ttfamily\small\color{urlText}]!#1!%
+    \mintinline[fontsize=\small,bgcolor=]{text}{#1}%
   }%
+}
+
+%------------------------------------------------------------------------------
+% STYLES ADDITIONNELS POUR DIFFÉRENTS LANGAGES
+%------------------------------------------------------------------------------
+% Style pour bash/shell
+\setminted[bash]{
+  style=monokai,
+  fontsize=\footnotesize
+}
+
+% Style pour HTML
+\setminted[html]{
+  style=monokai,
+  fontsize=\footnotesize
+}
+
+% Style pour JavaScript
+\setminted[javascript]{
+  style=monokai,
+  fontsize=\footnotesize
+}
+
+%------------------------------------------------------------------------------
+% ENVIRONNEMENTS RACCOURCIS POUR DIFFÉRENTS LANGAGES
+%------------------------------------------------------------------------------
+% Environnement facile pour le code bash
+\newtcblisting{bashcode}[1][]{
+  pythonbox,
+  minted language=bash,
+  title=#1
+}
+
+% Environnement facile pour le code HTML
+\newtcblisting{htmlcode}[1][]{
+  pythonbox,
+  minted language=html,
+  title=#1
+}
+
+% Environnement facile pour le code JavaScript
+\newtcblisting{jscode}[1][]{
+  pythonbox,
+  minted language=javascript,
+  title=#1
 }

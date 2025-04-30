@@ -45,7 +45,7 @@ Ce procédé nécessite de fusionner des fichiers NetCDF à chaque itération, c
 
 Une méthode plus simple consiste à exécuter une dernière fois la méthode classique, puis à créer un \inlinecode{DataFrame} pour exporter l’ensemble des données climatiques, comme ci-dessous :
 
-\begin{pythoncode}[]
+\begin{minted}{python}
 #============================================================================= 
 # Exportation des données climatiques 
 # ============================================================================= 
@@ -58,11 +58,11 @@ Une méthode plus simple consiste à exécuter une dernière fois la méthode cl
 #     't': BV.climatic.t,
 # })
 # df_climatic.to_csv(os.path.join(data_path, 'Meteo', 'Historiques SIM2', 'climatic_data.csv'))
-\end{pythoncode}
+\end{minted}
 
 Ensuite, toute la classe climatique peut etre mise en commentaire afin de ne garder que la lecture du CSV précédemment créé, comme ci-dessous :
 
-\begin{pythoncode}[]
+\begin{minted}{python}
 df_climatic = pd.read_csv(
     os.path.join(data_path, 'Meteo', 'Historiques SIM2', 'climatic_data.csv'),
     index_col=0, parse_dates=True
@@ -92,7 +92,7 @@ BV.climatic.t = df_climatic['t']
 
 first_clim = BV.climatic.recharge[0]
 BV.climatic.update_first_clim(first_clim)
-\end{pythoncode}
+\end{minted}
 
 \begin{TipBox}
     \textbf{Remarque :} Il est conseillé d’exporter le fichier en données journalières, puis de procéder à la réanalyse (hebdomadaire, mensuelle, etc.) lors de l’import. La sélection automatique des dates minimale et maximale peut être réalisée à l’aide des arguments déjà renseignés.
@@ -104,10 +104,10 @@ BV.climatic.update_first_clim(first_clim)
 \subsection{Simplex}
 \label{sec:simplex}
 
-Le Simplex de Nelder-Mead est un algorithme d'optimisation non-linéaire particulièrement adapté à la calibration de modèles hydrogéologiques \parencite{gaoImplementingNelderMeadSimplex2012}. Son principe repose sur la construction d'une figure géométrique à \(N+1\) sommets dans un espace à \(N\) dimensions, où \(N\) représente le nombre de paramètres à calibrer.
+Le Simplex de Nelder-Mead est un algorithme d'optimisation non-linéaire. Son principe repose sur la construction d'une figure géométrique à \(N+1\) sommets dans un espace à \(N\) dimensions, où \(N\) représente le nombre de paramètres à calibrer.
 
 \vspace{2em}
-\noindent\textbf{**Formulation de Nelder-Mead**}\\
+\noindent\textbf{Formulation de Nelder-Mead}
 
 L'algorithme fonctionne en minimisant le volume du simplexe à travers une série d'opérations géométriques jusqu'à convergence vers le jeu de paramètres optimal. À chaque itération, les valeurs de la fonction objectif aux sommets sont ordonnées:
 \begin{equation}
@@ -115,11 +115,11 @@ f(x_1) \leq f(x_2) \leq \ldots \leq f(x_{N+1})
 \end{equation}
 
 Quatre opérations géométriques principales sont appliquées \parencite{gaoImplementingNelderMeadSimplex2012}:
-\begin{itemize}
-\item \textit{Réflexion}: création d'un point $x_r$ en reflétant le plus mauvais sommet $x_{N+1}$ par rapport au centroïde des autres sommets
-\item \textit{Expansion}: si le point réfléchi est prometteur, on étend dans cette direction (point $x_e$)
-\item \textit{Contraction}: si le point réfléchi n'améliore pas suffisamment la solution, on contracte le simplexe vers l'intérieur (point $x_c$)
-\item \textit{Rétrécissement}: si aucune des opérations précédentes n'améliore la solution, on rétrécit l'ensemble du simplexe vers le meilleur sommet $x_1$
+\begin{itemize}[leftmargin=1.5cm]
+    \item \textit{Réflexion}: création d'un point $x_r$ en reflétant le plus mauvais sommet $x_{N+1}$ par rapport au centroïde des autres sommets
+    \item \textit{Expansion}: si le point réfléchi est prometteur, on étend dans cette direction (point $x_e$)
+    \item \textit{Contraction}: si le point réfléchi n'améliore pas suffisamment la solution, on contracte le simplexe vers l'intérieur (point $x_c$)
+    \item \textit{Rétrécissement}: si aucune des opérations précédentes n'améliore la solution, on rétrécit l'ensemble du simplexe vers le meilleur sommet $x_1$
 \end{itemize}
 
 La version adaptative proposée par \textcite{gaoImplementingNelderMeadSimplex2012} améliore l'algorithme classique en ajustant dynamiquement les paramètres de réflexion ($\rho$), d'expansion ($\chi$), de contraction ($\gamma$) et de rétrécissement ($\sigma$) en fonction de la dimension du problème:
@@ -128,7 +128,7 @@ La version adaptative proposée par \textcite{gaoImplementingNelderMeadSimplex20
 \end{align}
 
 \vspace{2em}
-\noindent\textbf{**Intégration dans le flux d'exécution**}\\
+\noindent\textbf{Intégration dans le flux d'exécution}
 
 L'algorithme Simplex est intégré juste avant le lancement des simulations MODFLOW, entre la mise à jour des paramètres du modèle et l'exécution standard de la simulation. Une condition booléenne permet de contrôler l'activation de la calibration automatique:
 
@@ -137,7 +137,7 @@ L'algorithme Simplex est intégré juste avant le lancement des simulations MODF
 Une fois la paramétrisation terminée, le meilleur jeu de paramètres est utilisé pour mettre à jour les valeurs initiales et lancer la simulation standard.
 
 \vspace{2em}
-\noindent\textbf{**Paramètres calibrés**}\\
+\noindent\textbf{Paramètres calibrés}
 
 Dans notre implémentation actuelle, trois paramètres clés sont calibrés:
 \begin{itemize}
@@ -149,7 +149,7 @@ Dans notre implémentation actuelle, trois paramètres clés sont calibrés:
 Le Simplex est particulièrement adapté pour calibrer entre 2 et 5 paramètres maximum, ce qui correspond bien à notre cas d'utilisation. Cette efficacité pour un nombre limité de paramètres est l'une des raisons pour lesquelles la méthode est privilégiée dans notre contexte hydrogéologique \parencite{gaoImplementingNelderMeadSimplex2012}.
 
 \vspace{2em}
-\noindent\textbf{**Fonction objectif et sélection des données**}\\
+\noindent\textbf{Fonction objectif et sélection des données}\\
 
 La fonction objectif utilisée pour l'évaluation de performance est le critère de Nash-Sutcliffe (NSE):
 \begin{equation}\label{eq:nse}
@@ -161,7 +161,7 @@ où $Q_{obs,t}$ représente le débit observé au temps $t$, $Q_{sim,t}$ le déb
 Une fonction dédiée en début de script permet de sélectionner les chroniques de données qui seront utilisées pour la calibration. L'utilisateur peut définir une période spécifique en précisant les années minimale et maximale dans la plage commune des données de simulation et d'observation. Cette approche permet d'optimiser le modèle sur une période représentative tout en excluant potentiellement des périodes atypiques qui pourraient biaiser la calibration.
 
 \vspace{2em}
-\noindent\textbf{**Critères de convergence**}\\
+\noindent\textbf{Critères de convergence}
 
 Suivant les recommandations de \textcite{gaoImplementingNelderMeadSimplex2012}, la convergence de l'algorithme est évaluée par deux critères:
 \begin{itemize}

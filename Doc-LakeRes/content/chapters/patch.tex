@@ -23,7 +23,7 @@ Les \inlinecode{DeprecationWarning} sont affichés dans le kernel lorsque des m�
     Supprimer l'affichage de ces messages ne pose aucun problème de fonctionnement à l'exécution du code.
 \end{InfoBox}
 
-\begin{pythoncode}[]
+\begin{minted}{python}
     # Filtrer les avertissements (avant les imports)
     import warnings
     warnings.filterwarnings('ignore', category=DeprecationWarning)
@@ -31,7 +31,7 @@ Les \inlinecode{DeprecationWarning} sont affichés dans le kernel lorsque des m�
     import pkg_resources # A placer apres DeprecationWarning car elle meme obsolète...
     warnings.filterwarnings('ignore', message='.*pkg_resources.*')
     warnings.filterwarnings('ignore', message='.*declare_namespace.*')
-\end{pythoncode}
+\end{minted}
 
 \section{Suppression des fichiers.chk}
 \label{sec:suppression_fichiers_chk}
@@ -43,7 +43,7 @@ Les \inlinecode{DeprecationWarning} sont affichés dans le kernel lorsque des m�
     \item Sinon, créer un script qui supprime tous les fichiers se terminant par \filepath{*.chk}, sous la forme d'une fonction \inlinecode{def} dans la \filepath{toolbox}, appelée à la fin des \inlinecode{post-traitements} de \textbf{Modflow} et \textbf{Modpath}.
 \end{enumerate}
 
-\begin{pythoncode}[]
+\begin{minted}{python}
     clean_root = [dirname(root_dir), self.watershed_folder] 
     for clean_root in clean_root: 
         for dirpath, dirnames, filenames in os.walk(clean_root): 
@@ -52,6 +52,6 @@ Les \inlinecode{DeprecationWarning} sont affichés dans le kernel lorsque des m�
                 if filename.endswith('.chk'): 
                     os.remove(os.path.join(dirpath, filename)) 
                     print(f"Delete {filename} file") 
-\end{pythoncode}
+\end{minted}
 
 
