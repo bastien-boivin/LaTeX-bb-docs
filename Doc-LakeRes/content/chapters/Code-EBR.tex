@@ -104,7 +104,7 @@ BV.climatic.update_first_clim(first_clim)
 \subsection{Simplex}
 \label{sec:simplex}
 
-Le Simplex de Nelder-Mead est un algorithme d'optimisation non-linéaire particulièrement adapté à la calibration de modèles hydrogéologiques \parencite{gao_implementing_2012}. Son principe repose sur la construction d'une figure géométrique à \(N+1\) sommets dans un espace à \(N\) dimensions, où \(N\) représente le nombre de paramètres à calibrer.
+Le Simplex de Nelder-Mead est un algorithme d'optimisation non-linéaire particulièrement adapté à la calibration de modèles hydrogéologiques \parencite{gaoImplementingNelderMeadSimplex2012}. Son principe repose sur la construction d'une figure géométrique à \(N+1\) sommets dans un espace à \(N\) dimensions, où \(N\) représente le nombre de paramètres à calibrer.
 
 \vspace{2em}
 \noindent\textbf{**Formulation de Nelder-Mead**}\\
@@ -114,7 +114,7 @@ L'algorithme fonctionne en minimisant le volume du simplexe à travers une séri
 f(x_1) \leq f(x_2) \leq \ldots \leq f(x_{N+1})
 \end{equation}
 
-Quatre opérations géométriques principales sont appliquées \parencite{gao_implementing_2012}:
+Quatre opérations géométriques principales sont appliquées \parencite{gaoImplementingNelderMeadSimplex2012}:
 \begin{itemize}
 \item \textit{Réflexion}: création d'un point $x_r$ en reflétant le plus mauvais sommet $x_{N+1}$ par rapport au centroïde des autres sommets
 \item \textit{Expansion}: si le point réfléchi est prometteur, on étend dans cette direction (point $x_e$)
@@ -122,9 +122,9 @@ Quatre opérations géométriques principales sont appliquées \parencite{gao_im
 \item \textit{Rétrécissement}: si aucune des opérations précédentes n'améliore la solution, on rétrécit l'ensemble du simplexe vers le meilleur sommet $x_1$
 \end{itemize}
 
-La version adaptative proposée par \textcite{gao_implementing_2012} améliore l'algorithme classique en ajustant dynamiquement les paramètres de réflexion ($\rho$), d'expansion ($\chi$), de contraction ($\gamma$) et de rétrécissement ($\sigma$) en fonction de la dimension du problème:
+La version adaptative proposée par \textcite{gaoImplementingNelderMeadSimplex2012} améliore l'algorithme classique en ajustant dynamiquement les paramètres de réflexion ($\rho$), d'expansion ($\chi$), de contraction ($\gamma$) et de rétrécissement ($\sigma$) en fonction de la dimension du problème:
 \begin{align}
-\rho &= 1, \quad \chi = 1 + \frac{2}{N}, \quad \gamma = 0.75 - \frac{0.5}{N}, \quad \sigma = 1 - \frac{1}{N}
+\rho = 1, \quad \chi = 1 + \frac{2}{N}, \quad \gamma = 0.75 - \frac{0.5}{N}, \quad \sigma = 1 - \frac{1}{N}
 \end{align}
 
 \vspace{2em}
@@ -146,7 +146,7 @@ Dans notre implémentation actuelle, trois paramètres clés sont calibrés:
 \item Conductivité hydraulique ($K$)
 \end{itemize}
 
-Le Simplex est particulièrement adapté pour calibrer entre 2 et 5 paramètres maximum, ce qui correspond bien à notre cas d'utilisation. Cette efficacité pour un nombre limité de paramètres est l'une des raisons pour lesquelles la méthode est privilégiée dans notre contexte hydrogéologique \parencite{gao_implementing_2012}.
+Le Simplex est particulièrement adapté pour calibrer entre 2 et 5 paramètres maximum, ce qui correspond bien à notre cas d'utilisation. Cette efficacité pour un nombre limité de paramètres est l'une des raisons pour lesquelles la méthode est privilégiée dans notre contexte hydrogéologique \parencite{gaoImplementingNelderMeadSimplex2012}.
 
 \vspace{2em}
 \noindent\textbf{**Fonction objectif et sélection des données**}\\
@@ -163,10 +163,10 @@ Une fonction dédiée en début de script permet de sélectionner les chroniques
 \vspace{2em}
 \noindent\textbf{**Critères de convergence**}\\
 
-Suivant les recommandations de \textcite{gao_implementing_2012}, la convergence de l'algorithme est évaluée par deux critères:
+Suivant les recommandations de \textcite{gaoImplementingNelderMeadSimplex2012}, la convergence de l'algorithme est évaluée par deux critères:
 \begin{itemize}
 \item L'écart-type des valeurs de la fonction objectif aux sommets du simplexe est inférieur à un seuil prédéfini
 \item Le diamètre maximal du simplexe (distance maximale entre deux sommets) est inférieur à une tolérance définie
 \end{itemize}
 
-Lorsque ces deux critères sont satisfaits simultanément, l'algorithme s'arrête et retourne le meilleur jeu de paramètres identifié \parencite{gao_implementing_2012}.
+Lorsque ces deux critères sont satisfaits simultanément, l'algorithme s'arrête et retourne le meilleur jeu de paramètres identifié \parencite{gaoImplementingNelderMeadSimplex2012}.
