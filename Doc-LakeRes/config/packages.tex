@@ -53,6 +53,7 @@
 % \usepackage{listings}           % Affichage de code source
 \usepackage{minted}
 \usepackage{amsmath}            % Ajouter cette ligne avant tcolorbox
+\usepackage{amsfonts,amssymb} 
 \usepackage{tcolorbox}          % Boîtes colorées avancées
 \tcbuselibrary{listings,skins,breakable}   % Extensions de tcolorbox
 
@@ -67,3 +68,20 @@
 % TABLES DES MATIÈRES LOCALES
 %------------------------------------------------------------------------------
 \usepackage{titletoc}         % Meilleur contrôle des tables des matières
+
+%------------------------------------------------------------------------------
+% LISTES INLINES
+%------------------------------------------------------------------------------
+\usepackage[inline]{enumitem}   % fournit itemize*/enumerate*
+
+%------------------------------------------------------------------------------
+% GESTION D'UNICODE RESIDUEL
+%------------------------------------------------------------------------------
+\usepackage{newunicodechar}
+\newunicodechar{ε}{\ensuremath{\varepsilon}}
+
+%------------------------------------------------------------------------------
+% ALGORITHMES
+%------------------------------------------------------------------------------
+\usepackage{algorithm}
+\usepackage{algpseudocode}

@@ -101,72 +101,209 @@ BV.climatic.update_first_clim(first_clim)
 \section{Paramétrisation}
 \label{sec:parametrisation}
 
-\subsection{Simplex}
+\subsection{Simplex de Nelder-Mead}
 \label{sec:simplex}
 
-Le Simplex de Nelder-Mead est un algorithme d'optimisation non-linéaire. Son principe repose sur la construction d'une figure géométrique à \(N+1\) sommets dans un espace à \(N\) dimensions, où \(N\) représente le nombre de paramètres à calibrer.
+Le Simplex de Nelder-Mead est un algorithme d'optimisation non-linéaire adapté aux problèmes où le calcul des dérivées est complexe. Son principe repose sur la manipulation d'une figure géométrique à \(N+1\) sommets dans un espace à \(N\) dimensions.
 
-\vspace{2em}
-\noindent\textbf{Formulation de Nelder-Mead}
+\subsubsection{Principe et enchaînement des opérations}
 
-L'algorithme fonctionne en minimisant le volume du simplexe à travers une série d'opérations géométriques jusqu'à convergence vers le jeu de paramètres optimal. À chaque itération, les valeurs de la fonction objectif aux sommets sont ordonnées:
-\begin{equation}
+L'algorithme utilise quatre opérations géométriques principales qui s'enchaînent selon un arbre de décision précis. À chaque itération, les valeurs de la fonction objectif aux sommets sont d'abord ordonnées:
+\begin{equation}\label{eq:ordre_simplex}
 f(x_1) \leq f(x_2) \leq \ldots \leq f(x_{N+1})
 \end{equation}
 
-Quatre opérations géométriques principales sont appliquées \parencite{gaoImplementingNelderMeadSimplex2012}:
-\begin{itemize}[leftmargin=1.5cm]
-    \item \textit{Réflexion}: création d'un point $x_r$ en reflétant le plus mauvais sommet $x_{N+1}$ par rapport au centroïde des autres sommets
-    \item \textit{Expansion}: si le point réfléchi est prometteur, on étend dans cette direction (point $x_e$)
-    \item \textit{Contraction}: si le point réfléchi n'améliore pas suffisamment la solution, on contracte le simplexe vers l'intérieur (point $x_c$)
-    \item \textit{Rétrécissement}: si aucune des opérations précédentes n'améliore la solution, on rétrécit l'ensemble du simplexe vers le meilleur sommet $x_1$
-\end{itemize}
+Où $x_1$ est le meilleur sommet et $x_{N+1}$ le pire. Le centroïde des $N$ meilleurs sommets est calculé comme $x_0 = \frac{1}{N}\sum_{i=1}^{N}x_i$.
 
-La version adaptative proposée par \textcite{gaoImplementingNelderMeadSimplex2012} améliore l'algorithme classique en ajustant dynamiquement les paramètres de réflexion ($\rho$), d'expansion ($\chi$), de contraction ($\gamma$) et de rétrécissement ($\sigma$) en fonction de la dimension du problème:
+L'enchaînement des opérations suit alors la logique suivante:
+
+\noindent\textbf{Enchaînement des opérations dans une itération du Simplex de Nelder-Mead:}
+
+\begin{enumerate}
+\item \textbf{Réflexion} (toujours effectuée en premier):
+   \begin{itemize}
+   \item Calculer $x_r = x_0 + \alpha(x_0 - x_{N+1})$ et évaluer $f_r = f(x_r)$
+   \end{itemize}
+
+\item \textbf{Décision} (une seule branche est suivie):
+   \begin{itemize}
+   \item Si $f(x_1) \leq f_r < f(x_N)$ : \\
+         Remplacer $x_{N+1}$ par $x_r$ (simple acceptation de la réflexion)
+   
+   \item Si $f_r < f(x_1)$ : \\
+         \textbf{Expansion}: Calculer $x_e = x_0 + \beta(x_r - x_0)$ et évaluer $f_e = f(x_e)$ \\
+         Si $f_e < f_r$ : Remplacer $x_{N+1}$ par $x_e$ \\
+         Sinon : Remplacer $x_{N+1}$ par $x_r$
+   
+   \item Si $f_r \geq f(x_N)$ et $f_r < f(x_{N+1})$ : \\
+         \textbf{Contraction externe}: Calculer $x_c = x_0 + \gamma(x_r - x_0)$ et évaluer $f_c = f(x_c)$ \\
+         Si $f_c \leq f_r$ : Remplacer $x_{N+1}$ par $x_c$ \\
+         Sinon : Appliquer \textbf{Rétrécissement}
+   
+   \item Si $f_r \geq f(x_{N+1})$ : \\
+         \textbf{Contraction interne}: Calculer $x_c = x_0 + \gamma(x_{N+1} - x_0)$ et évaluer $f_c = f(x_c)$ \\
+         Si $f_c < f(x_{N+1})$ : Remplacer $x_{N+1}$ par $x_c$ \\
+         Sinon : Appliquer \textbf{Rétrécissement}
+   \end{itemize}
+
+\item \textbf{Rétrécissement} (seulement si la contraction a échoué):
+   \begin{itemize}
+   \item Pour $i = 2, \ldots, N+1$, remplacer $x_i$ par $x_1 + \delta(x_i - x_1)$
+   \end{itemize}
+\end{enumerate}
+
+Où les coefficients standards sont $\alpha = 1$ (réflexion), $\beta = 2$ (expansion), $\gamma = 0.5$ (contraction) et $\delta = 0.5$ (rétrécissement). Dans notre implémentation adaptative, ils dépendent de la dimension $N$ du problème:
 \begin{align}
-\rho = 1, \quad \chi = 1 + \frac{2}{N}, \quad \gamma = 0.75 - \frac{0.5}{N}, \quad \sigma = 1 - \frac{1}{N}
+\alpha &= 1, \quad \beta = 1 + \frac{2}{N}, \quad \gamma = 0.75 - \frac{0.5}{N}, \quad \delta = 1 - \frac{1}{N}
 \end{align}
 
-\vspace{2em}
-\noindent\textbf{Intégration dans le flux d'exécution}
-
-L'algorithme Simplex est intégré juste avant le lancement des simulations MODFLOW, entre la mise à jour des paramètres du modèle et l'exécution standard de la simulation. Une condition booléenne permet de contrôler l'activation de la calibration automatique:
-
-\inlinecode{if run_simplex then : # executer la calibration}
-
-Une fois la paramétrisation terminée, le meilleur jeu de paramètres est utilisé pour mettre à jour les valeurs initiales et lancer la simulation standard.
-
-\vspace{2em}
-\noindent\textbf{Paramètres calibrés}
-
-Dans notre implémentation actuelle, trois paramètres clés sont calibrés:
+Points importants à noter:
 \begin{itemize}
-\item Épaisseur de l'aquifère ($e$)
-\item Porosité ($\phi$)
-\item Conductivité hydraulique ($K$)
+    \item Une seule des branches de l'arbre de décision est suivie à chaque itération
+    \item Le rétrécissement n'est appliqué qu'en dernier recours, si les contractions échouent
+    \item Pour les problèmes de grande dimension, les opérations de réflexion deviennent dominantes, réduisant l'efficacité de l'algorithme
 \end{itemize}
 
-Le Simplex est particulièrement adapté pour calibrer entre 2 et 5 paramètres maximum, ce qui correspond bien à notre cas d'utilisation. Cette efficacité pour un nombre limité de paramètres est l'une des raisons pour lesquelles la méthode est privilégiée dans notre contexte hydrogéologique \parencite{gaoImplementingNelderMeadSimplex2012}.
+\subsubsection{Normalisation et mise à l'échelle des paramètres}
 
-\vspace{2em}
-\noindent\textbf{Fonction objectif et sélection des données}\\
+Pour garantir une convergence efficace, nous normalisons tous les paramètres dans l'intervalle [0,1] avant optimisation:
+\begin{equation}
+x_{norm} = \frac{x - x_{min}}{x_{max} - x_{min}}
+\end{equation}
 
-La fonction objectif utilisée pour l'évaluation de performance est le critère de Nash-Sutcliffe (NSE):
+Cette normalisation est particulièrement importante pour la conductivité hydraulique ($K$) qui varie sur plusieurs ordres de grandeur. Pour ce paramètre, nous utilisons une échelle logarithmique:
+\begin{equation}
+K_{norm} = \frac{\log_{10}(K) - \log_{10}(K_{min})}{\log_{10}(K_{max}) - \log_{10}(K_{min})}
+\end{equation}
+
+\subsubsection{Implémentation dans le code}
+
+L'algorithme est intégré via la bibliothèque SciPy:
+
+\begin{minted}{python}
+from scipy.optimize import minimize
+
+# Normalisation des paramètres
+def normalize(x, xmin, xmax):
+    """Normalise une valeur x selon les bornes xmin et xmax"""
+    return (x - xmin) / (xmax - xmin)
+
+def denormalize(x_norm, xmin, xmax):
+    """Dénormalise une valeur x_norm selon les bornes xmin et xmax"""
+    return x_norm * (xmax - xmin) + xmin
+
+# Fonction objectif normalisée
+def erreur_modele_norm(params_norm):
+    # Dénormalisation des paramètres
+    log_hk_value = denormalize(params_norm[0], log_hk_min, log_hk_max)
+    hk_value = 10**log_hk_value
+    sy_value = denormalize(params_norm[1], sy_min, sy_max)
+    thick_value = denormalize(params_norm[2], thick_min, thick_max)
+    
+    # Mise à jour du modèle avec les nouveaux paramètres
+    BV.hydraulic.update_hk(hk_value)
+    BV.hydraulic.update_sy(sy_value)
+    BV.hydraulic.update_thick(thick_value)
+    
+    # Simulation du modèle avec ces paramètres
+    model_modflow = BV.preprocessing_modflow()
+    success_modflow = BV.processing_modflow(model_modflow)
+    BV.postprocessing_timeseries(model_modflow)
+    
+    # Calcul du critère de Nash-Sutcliffe
+    nse = 1 - (numerator / denominator) 
+    return 1 - nse  # On minimise 1-NSE
+
+# Exécution de l'optimisation
+result = minimize(
+    erreur_modele_norm, 
+    x0_norm,  # Paramètres initiaux normalisés
+    method='Nelder-Mead',
+    options={
+        'xatol': 0.01,  # Tolérance sur les paramètres
+        'fatol': 0.01,  # Tolérance sur la fonction
+        'maxiter': 200,  # Nombre max d'itérations
+        'disp': True     # Affichage des informations
+    }
+)
+\end{minted}
+
+\subsubsection{Paramètres calibrés}
+
+Dans notre implémentation, trois paramètres hydrogéologiques fondamentaux sont calibrés:
+
+\begin{table}[h]
+\centering
+\caption{Paramètres hydrogéologiques calibrés et leurs bornes}
+\label{tab:parametres_calibres}
+\begin{tabular}{|l|c|c|c|l|}
+\hline
+\textbf{Paramètre} & \textbf{Minimum} & \textbf{Maximum} & \textbf{Unité} & \textbf{Influence} \\
+\hline
+Conductivité ($K$) & $10^{-6}$ & $10^{-3}$ & m/s & Capacité de l'aquifère à transmettre l'eau \\
+\hline
+Porosité efficace ($S_y$) & 0.001 & 0.1 & - & Capacité de stockage \\
+\hline
+Épaisseur ($e$) & 20 & 40 & m & Volume de l'aquifère disponible \\
+\hline
+\end{tabular}
+\end{table}
+
+Le Simplex est particulièrement adapté pour ce nombre limité de paramètres. Sa convergence reste efficace et rapide pour des problèmes de dimension inférieure à 5.
+
+\subsubsection{Fonction objectif et sélection des données}
+
+La fonction objectif utilisée est le critère de Nash-Sutcliffe (NSE):
 \begin{equation}\label{eq:nse}
 \text{NSE} = 1 - \frac{\sum_{t=1}^{T}(Q_{obs,t} - Q_{sim,t})^2}{\sum_{t=1}^{T}(Q_{obs,t} - \bar{Q}_{obs})^2}
 \end{equation}
 
-où $Q_{obs,t}$ représente le débit observé au temps $t$, $Q_{sim,t}$ le débit simulé, et $\bar{Q}_{obs}$ la moyenne des débits observés.
+Notre implémentation permet de sélectionner précisément les données utilisées pour la calibration:
 
-Une fonction dédiée en début de script permet de sélectionner les chroniques de données qui seront utilisées pour la calibration. L'utilisateur peut définir une période spécifique en précisant les années minimale et maximale dans la plage commune des données de simulation et d'observation. Cette approche permet d'optimiser le modèle sur une période représentative tout en excluant potentiellement des périodes atypiques qui pourraient biaiser la calibration.
+\begin{minted}{python}
+def filter_dates(dates):
+    """Filtre les dates selon des critères temporels et saisonniers"""
+    mask = pd.Series(True, index=dates)
+    
+    if use_time_filter:
+        mask = mask & (dates >= calib_start_date) & (dates <= calib_end_date)
+    
+        if use_seasonal_filter:
+            def is_in_season(date):
+                start = pd.Timestamp(date.year, season_start_month, season_start_day)
+                if season_end_month < season_start_month:
+                    end = pd.Timestamp(date.year + 1, season_end_month, season_end_day)
+                else:
+                    end = pd.Timestamp(date.year, season_end_month, season_end_day)
+                return (date >= start) & (date <= end)
+            
+            seasonal_mask = dates.map(is_in_season)
+            mask = mask & seasonal_mask
 
-\vspace{2em}
-\noindent\textbf{Critères de convergence}
+    return mask
+\end{minted}
 
-Suivant les recommandations de \textcite{gaoImplementingNelderMeadSimplex2012}, la convergence de l'algorithme est évaluée par deux critères:
-\begin{itemize}
-\item L'écart-type des valeurs de la fonction objectif aux sommets du simplexe est inférieur à un seuil prédéfini
-\item Le diamètre maximal du simplexe (distance maximale entre deux sommets) est inférieur à une tolérance définie
-\end{itemize}
+Cette approche permet de concentrer la calibration sur des périodes représentatives, en excluant si nécessaire des événements extrêmes ou des saisons particulières.
 
-Lorsque ces deux critères sont satisfaits simultanément, l'algorithme s'arrête et retourne le meilleur jeu de paramètres identifié \parencite{gaoImplementingNelderMeadSimplex2012}.
+\subsubsection{Avantages et limitations}
+
+\begin{table}[h]
+\centering
+\caption{Avantages et limitations du Simplex dans notre contexte}
+\label{tab:avantages_limitations}
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
+\textbf{Avantages} & \textbf{Limitations} \\
+\hline
+Ne nécessite pas le calcul des dérivées & Peut converger vers des minima locaux \\
+\hline
+Robuste face aux irrégularités de la fonction objectif & Nombre d'itérations potentiellement élevé \\
+\hline
+Implémentation simple via SciPy & Sensible à l'initialisation du simplexe \\
+\hline
+Adapté aux problèmes avec peu de paramètres & Performances réduites au-delà de 5 paramètres \\
+\hline
+\end{tabular}
+\end{table}
+
+Dans notre contexte hydrogéologique, le Simplex offre un excellent compromis entre simplicité d'implémentation et efficacité de calibration pour les principaux paramètres qui contrôlent le comportement hydraulique du modèle.
