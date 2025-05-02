@@ -106,6 +106,8 @@ BV.climatic.update_first_clim(first_clim)
 
 Le Simplex de Nelder-Mead est un algorithme d'optimisation non-linéaire adapté aux problèmes où le calcul des dérivées est complexe. Son principe repose sur la manipulation d'une figure géométrique à \(N+1\) sommets dans un espace à \(N\) dimensions.
 
+\vspace{1em}
+
 \subsubsection{Principe et enchaînement des opérations}
 
 L'algorithme utilise quatre opérations géométriques principales qui s'enchaînent selon un arbre de décision précis. À chaque itération, les valeurs de la fonction objectif aux sommets sont d'abord ordonnées:
@@ -113,56 +115,149 @@ L'algorithme utilise quatre opérations géométriques principales qui s'enchaî
 f(x_1) \leq f(x_2) \leq \ldots \leq f(x_{N+1})
 \end{equation}
 
-Où $x_1$ est le meilleur sommet et $x_{N+1}$ le pire. Le centroïde des $N$ meilleurs sommets est calculé comme $x_0 = \frac{1}{N}\sum_{i=1}^{N}x_i$.
+Où $x_1$ est le meilleur sommet (valeur de fonction la plus basse) et $x_{N+1}$ le pire sommet (valeur de fonction la plus élevée). Le centroïde des $N$ meilleurs sommets est calculé comme $x_0 = \frac{1}{N}\sum_{i=1}^{N}x_i$.
 
-L'enchaînement des opérations suit alors la logique suivante:
+\vspace{1em}
 
-\noindent\textbf{Enchaînement des opérations dans une itération du Simplex de Nelder-Mead:}
+\subsubsection{Enchaînement des opérations dans une itération du Simplex de Nelder-Mead:}
 
 \begin{enumerate}
-\item \textbf{Réflexion} (toujours effectuée en premier):
-   \begin{itemize}
-   \item Calculer $x_r = x_0 + \alpha(x_0 - x_{N+1})$ et évaluer $f_r = f(x_r)$
-   \end{itemize}
+    \item \textbf{Réflexion} (toujours effectuée en premier) :
+    
+       Cette étape vise à explorer l'espace des solutions en reflétant le pire point du simplex (le sommet avec la plus mauvaise valeur de la fonction objectif) à travers le centre de gravité des autres points. Cela permet souvent de s'approcher d'une zone de meilleure performance.
+    
+       \begin{itemize}
+       \item Calculer le point réfléchi :
+       \begin{equation}
+       x_r = x_0 + \alpha (x_0 - x_{N+1})
+       \end{equation}
+       où $x_0$ est le centroïde des meilleurs sommets, $x_{N+1}$ est le pire point, et $\alpha$ est le coefficient de réflexion (généralement égal à 1). Ce coefficient détermine la distance à laquelle le point est réfléchi au-delà du centroïde, le nouveau point $x_r$ est donc situé à une distance proportionnelle à la distance entre le centroïde et le pire point.
+       
+       On évalue ensuite la fonction objectif au point réfléchi :
+       \begin{equation}
+       f_r = f(x_r)
+       \end{equation}
+       Cette valeur déterminera l'étape suivante de l'algorithme.
+       \end{itemize}
+    
+\vspace{1em}
+    
+    \item \textbf{Décision} (une seule branche est suivie en fonction de la qualité du point réfléchi) :
+    
+       Selon la valeur de $f_r$, plusieurs scénarios sont envisagés pour ajuster le simplex et continuer l'optimisation. Ce processus de décision permet à l'algorithme de s'adapter à la topologie locale de la fonction objectif.
+    
+       \begin{itemize}
 
-\item \textbf{Décision} (une seule branche est suivie):
-   \begin{itemize}
-   \item Si $f(x_1) \leq f_r < f(x_N)$ : \\
-         Remplacer $x_{N+1}$ par $x_r$ (simple acceptation de la réflexion)
-   
-   \item Si $f_r < f(x_1)$ : \\
-         \textbf{Expansion}: Calculer $x_e = x_0 + \beta(x_r - x_0)$ et évaluer $f_e = f(x_e)$ \\
-         Si $f_e < f_r$ : Remplacer $x_{N+1}$ par $x_e$ \\
-         Sinon : Remplacer $x_{N+1}$ par $x_r$
-   
-   \item Si $f_r \geq f(x_N)$ et $f_r < f(x_{N+1})$ : \\
-         \textbf{Contraction externe}: Calculer $x_c = x_0 + \gamma(x_r - x_0)$ et évaluer $f_c = f(x_c)$ \\
-         Si $f_c \leq f_r$ : Remplacer $x_{N+1}$ par $x_c$ \\
-         Sinon : Appliquer \textbf{Rétrécissement}
-   
-   \item Si $f_r \geq f(x_{N+1})$ : \\
-         \textbf{Contraction interne}: Calculer $x_c = x_0 + \gamma(x_{N+1} - x_0)$ et évaluer $f_c = f(x_c)$ \\
-         Si $f_c < f(x_{N+1})$ : Remplacer $x_{N+1}$ par $x_c$ \\
-         Sinon : Appliquer \textbf{Rétrécissement}
-   \end{itemize}
+\vspace{1em}
 
-\item \textbf{Rétrécissement} (seulement si la contraction a échoué):
-   \begin{itemize}
-   \item Pour $i = 2, \ldots, N+1$, remplacer $x_i$ par $x_1 + \delta(x_i - x_1)$
-   \end{itemize}
-\end{enumerate}
+       \item \textbf{Cas 1 : Acceptation simple} \\
+       Si le point réfléchi est meilleur qu'une majorité des points mais pas le meilleur :
+       \begin{equation}
+       f(x_1) \leq f_r < f(x_N)
+       \end{equation}
+       alors on remplace simplement le pire point par le point réfléchi :
+       \begin{equation}
+       x_{N+1} \leftarrow x_r
+       \end{equation}
+       Cette situation correspond à un progrès modéré dans la recherche de l'optimum, sans nécessiter d'exploration supplémentaire dans cette direction.
 
-Où les coefficients standards sont $\alpha = 1$ (réflexion), $\beta = 2$ (expansion), $\gamma = 0.5$ (contraction) et $\delta = 0.5$ (rétrécissement). Dans notre implémentation adaptative, ils dépendent de la dimension $N$ du problème:
+       \begin{InfoBox}
+            Cependant, lorsque ce même point deviendra le moins bon, l'exploration pourra reprendre dans cette direction.
+       \end{InfoBox}
+
+\vspace{1em}
+    
+       \item \textbf{Cas 2 : Expansion} \\
+       Si le point réfléchi est meilleur que le meilleur point actuel :
+       \begin{equation}
+       f_r < f(x_1)
+       \end{equation}
+       on tente d'exploiter cette direction prometteuse en calculant un point encore plus éloigné. L'expansion permet de progresser plus rapidement vers l'optimum lorsqu'une direction favorable est identifiée :
+       \begin{equation}
+       x_e = x_0 + \beta (x_r - x_0)
+       \end{equation}
+       où $\beta$ est le coefficient d'expansion (supérieur à 1, égal à 2 dans le cas de l'utilisation de la méthode \inlinecode{minimize} dans \filepath{SciPy}). Ce coefficient détermine jusqu'où on étend la recherche dans la direction prometteuse.
+       
+\vspace{1em}
+    
+       \item \textbf{Cas 3 : Contraction externe} \\
+       Si le point réfléchi est moins bon que la plupart des points mais meilleur que le pire :
+       \begin{equation}
+       f(x_N) \leq f_r < f(x_{N+1})
+       \end{equation}
+       on essaie un compromis plus modéré en effectuant une contraction externe. Cette opération permet d'explorer l'espace entre le centroïde et le point réfléchi :
+       \begin{equation}
+       x_c = x_0 + \gamma (x_r - x_0)
+       \end{equation}
+       où $\gamma$ est le coefficient de contraction (compris entre 0 et 1, égal à 0.5 dans notre cas). Ce coefficient restreint l'exploration à une zone plus proche du centroïde.
+       
+       On évalue ensuite :
+       \begin{equation}
+       f_c = f(x_c)
+       \end{equation}
+       - Si $f_c \leq f_r$ : on accepte $x_c$ (la contraction a trouvé un point meilleur)
+       - Sinon : on procède à un rétrécissement du simplex (la contraction n'a pas été efficace)
+
+\vspace{1em}
+    
+       \item \textbf{Cas 4 : Contraction interne} \\
+       Si le point réfléchi est encore pire que le pire actuel :
+       \begin{equation}
+       f_r \geq f(x_{N+1})
+       \end{equation}
+       on tente une contraction plus prudente en explorant l'espace entre le centroïde et le pire point. Cette stratégie est adoptée lorsque la direction de réflexion s'avère défavorable :
+       \begin{equation}
+       x_c = x_0 + \gamma (x_{N+1} - x_0)
+       \end{equation}
+       où $\gamma$ est à nouveau le coefficient de contraction.
+       
+       On évalue :
+       \begin{equation}
+       f_c = f(x_c)
+       \end{equation}
+       - Si $f_c < f(x_{N+1})$ : on remplace le pire point par $x_c$ (la contraction interne a été bénéfique)
+       - Sinon : un rétrécissement complet du simplex devient nécessaire (la topologie locale est complexe et nécessite une restructuration)
+       \end{itemize}
+
+\vspace{1em}
+
+    \item \textbf{Rétrécissement} (seulement si la contraction a échoué) :
+    
+       Cette étape drastique vise à « resserrer » le simplex autour du meilleur point trouvé pour éviter de rester bloqué dans des zones peu prometteuses. Le rétrécissement est une stratégie de dernier recours qui indique souvent que l'algorithme approche d'un minimum local ou rencontre une région difficile de la fonction objectif.
+    
+       \begin{itemize}
+       \item Pour chaque $i = 2, \ldots, N+1$ :
+       \begin{equation}
+       x_i \leftarrow x_1 + \delta (x_i - x_1)
+       \end{equation}
+       où $\delta$ est le coefficient de rétrécissement (entre 0 et 1, égal à 0.5 dans notre cas). Ce coefficient détermine à quel point le simplex se contracte autour du meilleur point.
+       
+       Cette opération réduit la taille du simplex et recentre la recherche autour du meilleur point actuel, permettant une exploration plus fine et locale de l'espace des paramètres.
+       \end{itemize}
+    \end{enumerate}
+    
+Où les coefficients standards sont $\alpha = 1$ (réflexion), $\beta = 2$ (expansion), $\gamma = 0.5$ (contraction) et $\delta = 0.5$ (rétrécissement). La méthode \inlinecode{minimize} de \filepath{Scipy} utilise une implémentation adaptative, ils dépendent de la dimension $N$ du problème:
+
 \begin{align}
 \alpha &= 1, \quad \beta = 1 + \frac{2}{N}, \quad \gamma = 0.75 - \frac{0.5}{N}, \quad \delta = 1 - \frac{1}{N}
 \end{align}
 
-Points importants à noter:
-\begin{itemize}
-    \item Une seule des branches de l'arbre de décision est suivie à chaque itération
-    \item Le rétrécissement n'est appliqué qu'en dernier recours, si les contractions échouent
-    \item Pour les problèmes de grande dimension, les opérations de réflexion deviennent dominantes, réduisant l'efficacité de l'algorithme
-\end{itemize}
+Cette adaptation permet d'optimiser le comportement de l'algorithme en fonction de la dimensionnalité du problème. Pour les problèmes de grande dimension, les coefficients sont ajustés pour favoriser une exploration plus équilibrée de l'espace des paramètres.
+
+\vspace{1em}
+
+\begin{InfoBox}
+    \noindent\textbf{Points importants à noter:}
+        \begin{itemize}[leftmargin=1cm]
+            \item Une seule des branches de l'arbre de décision est suivie à chaque itération, ce qui rend l'algorithme efficace en termes de nombre d'évaluations de la fonction objectif. Cela signifie que l'algorithme choisit toujours le meilleur mouvement possible à chaque étape.
+            
+            \item Le rétrécissement n'est appliqué qu'en dernier recours, si les contractions échouent, car il s'agit d'une opération coûteuse nécessitant $N$ évaluations supplémentaires de la fonction. Cette opération réduit la taille du simplex autour du meilleur point pour affiner la recherche localement.
+            
+            \item Pour les problèmes de grande dimension (>5 paramètres), les opérations de réflexion deviennent dominantes mais moins efficaces. Les mouvements géométriques du simplex ne s'adaptent pas bien à la complexité croissante de l'espace de recherche, ce qui ralentit la convergence.
+            
+            \item L'algorithme ne nécessite pas le calcul de dérivées, ce qui le rend particulièrement utile pour l'optimisation de fonctions non différentiables, bruitées ou irrégulières. Cette caractéristique est idéale pour les modèles hydrogéologiques où les relations entre paramètres et performance peuvent présenter des discontinuités.
+        \end{itemize}
+\end{InfoBox}
 
 \subsubsection{Normalisation et mise à l'échelle des paramètres}
 
@@ -176,7 +271,8 @@ Cette normalisation est particulièrement importante pour la conductivité hydra
 K_{norm} = \frac{\log_{10}(K) - \log_{10}(K_{min})}{\log_{10}(K_{max}) - \log_{10}(K_{min})}
 \end{equation}
 
-\subsubsection{Implémentation dans le code}
+
+\subsubsection{Implémentation dans le code:}
 
 L'algorithme est intégré via la bibliothèque SciPy:
 
@@ -230,30 +326,11 @@ result = minimize(
 
 \subsubsection{Paramètres calibrés}
 
-Dans notre implémentation, trois paramètres hydrogéologiques fondamentaux sont calibrés:
-
-\begin{table}[h]
-\centering
-\caption{Paramètres hydrogéologiques calibrés et leurs bornes}
-\label{tab:parametres_calibres}
-\begin{tabular}{|l|c|c|c|l|}
-\hline
-\textbf{Paramètre} & \textbf{Minimum} & \textbf{Maximum} & \textbf{Unité} & \textbf{Influence} \\
-\hline
-Conductivité ($K$) & $10^{-6}$ & $10^{-3}$ & m/s & Capacité de l'aquifère à transmettre l'eau \\
-\hline
-Porosité efficace ($S_y$) & 0.001 & 0.1 & - & Capacité de stockage \\
-\hline
-Épaisseur ($e$) & 20 & 40 & m & Volume de l'aquifère disponible \\
-\hline
-\end{tabular}
-\end{table}
-
-Le Simplex est particulièrement adapté pour ce nombre limité de paramètres. Sa convergence reste efficace et rapide pour des problèmes de dimension inférieure à 5.
+Dans notre implémentation, trois paramètres hydrogéologiques fondamentaux sont calibrés, la conductivité hydraulique ($K$), la porosité efficace ($S_y$) et l'épaisseur de la couche aquifère ($e$). Ces paramètres sont cruciaux pour simuler le comportement hydraulique du modèle.
 
 \subsubsection{Fonction objectif et sélection des données}
 
-La fonction objectif utilisée est le critère de Nash-Sutcliffe (NSE):
+La fonction objectif utilisée dans notre cas est le critère de Nash-Sutcliffe (NSE):
 \begin{equation}\label{eq:nse}
 \text{NSE} = 1 - \frac{\sum_{t=1}^{T}(Q_{obs,t} - Q_{sim,t})^2}{\sum_{t=1}^{T}(Q_{obs,t} - \bar{Q}_{obs})^2}
 \end{equation}
@@ -283,27 +360,12 @@ def filter_dates(dates):
     return mask
 \end{minted}
 
-Cette approche permet de concentrer la calibration sur des périodes représentatives, en excluant si nécessaire des événements extrêmes ou des saisons particulières.
+Cette approche permet de concentrer la calibration sur des périodes représentatives, en excluant si nécessaire des événements extrêmes ou des saisons particulières, pour optimiser les périodes d'étiage par exemple.
 
 \subsubsection{Avantages et limitations}
 
-\begin{table}[h]
-\centering
-\caption{Avantages et limitations du Simplex dans notre contexte}
-\label{tab:avantages_limitations}
-\begin{tabular}{|p{7cm}|p{7cm}|}
-\hline
-\textbf{Avantages} & \textbf{Limitations} \\
-\hline
-Ne nécessite pas le calcul des dérivées & Peut converger vers des minima locaux \\
-\hline
-Robuste face aux irrégularités de la fonction objectif & Nombre d'itérations potentiellement élevé \\
-\hline
-Implémentation simple via SciPy & Sensible à l'initialisation du simplexe \\
-\hline
-Adapté aux problèmes avec peu de paramètres & Performances réduites au-delà de 5 paramètres \\
-\hline
-\end{tabular}
-\end{table}
-
 Dans notre contexte hydrogéologique, le Simplex offre un excellent compromis entre simplicité d'implémentation et efficacité de calibration pour les principaux paramètres qui contrôlent le comportement hydraulique du modèle.
+
+Cependant, il est important de garder à l'esprit ses limitations, notamment la sensibilité à l'initialisation et la possibilité de convergence vers des minima locaux. 
+
+Pour éviter cela, \textbf{il est recommandé de tester plusieurs initialisations} afin de s'assurer que les différents résultats convergent vers des solutions similaires.
