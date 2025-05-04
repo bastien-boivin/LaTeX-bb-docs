@@ -1,0 +1,63 @@
+{
+  "workbench.colorCustomizations": {
+	"activityBar.background": "#6CD4FF",
+        "activityBar.foreground": "#18006d",
+        "activityBar.inactiveForeground": "#18006d55",
+        "activityBarBadge.background": "#bf0060",
+        "activityBarBadge.foreground": "#e7e7e7"},
+
+  // Filtrage de messages LaTeX
+  "latex-workshop.message.latexlog.exclude": [
+    "minitoc\\(hints\\): W0099",
+    "minitoc\\(hints\\): W0024"
+  ],
+
+  // Confort d’édition pour les fichiers .tex
+  "[latex]": { "editor.wordWrap": "on" },
+
+  // ——————————————————————————————————
+  // OUTdir retiré : plus de _build
+  // ——————————————————————————————————
+  // (ne mettez PAS de clé "latex-workshop.latex.outDir")
+
+  // Outils
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": [
+        "-pdf",
+        "-pdflatex=pdflatex -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error %O %S",
+        "-bibtex",     // ou -bibtexu
+        "-silent",
+        "%DOC%"
+      ]
+    },
+    {
+      "name": "pdflatex",
+      "command": "pdflatex",
+      "args": [
+        "-shell-escape",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "%DOC%"
+      ]
+    },
+    { "name": "biber",  "command": "biber",  "args": ["%DOCFILE%"] },
+    { "name": "bibtex", "command": "bibtex", "args": ["%DOCFILE%"] }
+  ],
+
+  // Recettes
+  "latex-workshop.latex.recipes": [
+    { "name": "latexmk", "tools": ["latexmk"] },
+    { "name": "pdflatex → biber → pdflatex x2",
+      "tools": ["pdflatex", "biber", "pdflatex", "pdflatex"] },
+    { "name": "pdflatex → bibtex → pdflatex x2",
+      "tools": ["pdflatex", "bibtex", "pdflatex", "pdflatex"] }
+  ],
+
+    // Formatage automatique
+    "latex-workshop.formatting.latex.formatter": "prettier",
+    "latex-workshop.formatting.latex.formatterArgs": ["--parser", "latex"]
+}

@@ -104,7 +104,7 @@ BV.climatic.update_first_clim(first_clim)
 \subsection{Simplex de Nelder-Mead}
 \label{sec:simplex}
 
-Le Simplex de Nelder-Mead est un algorithme d'optimisation non-linéaire adapté aux problèmes où le calcul des dérivées est complexe. Son principe repose sur la manipulation d'une figure géométrique à \(N+1\) sommets dans un espace à \(N\) dimensions.
+Le Simplex de Nelder-Mead est un algorithme d'optimisation non-linéaire adapté aux problèmes où le calcul des dérivées est complexe. Son principe repose sur la manipulation d'une figure géométrique à \(N+1\) sommets dans un espace à \(N\) dimensions \parencite{nelderSimplexMethodFunction1965,lagariasConvergencePropertiesNelderMead1998}.
 
 \vspace{1em}
 
@@ -236,7 +236,7 @@ Où $x_1$ est le meilleur sommet (valeur de fonction la plus basse) et $x_{N+1}$
        \end{itemize}
     \end{enumerate}
     
-Où les coefficients standards sont $\alpha = 1$ (réflexion), $\beta = 2$ (expansion), $\gamma = 0.5$ (contraction) et $\delta = 0.5$ (rétrécissement). La méthode \inlinecode{minimize} de \filepath{Scipy} utilise une implémentation adaptative, ils dépendent de la dimension $N$ du problème:
+Où les coefficients standards sont $\alpha = 1$ (réflexion), $\beta = 2$ (expansion), $\gamma = 0.5$ (contraction) et $\delta = 0.5$ (rétrécissement). La méthode \inlinecode{minimize} de \filepath{Scipy} utilise une implémentation adaptative, ils dépendent de la dimension $N$ du problème( basé sur les travaux de \cite{nelderSimplexMethodFunction1965}; \cite{lagariasConvergencePropertiesNelderMead1998}; et \cite{gaoImplementingNelderMeadSimplex2012}):
 
 \begin{align}
 \alpha &= 1, \quad \beta = 1 + \frac{2}{N}, \quad \gamma = 0.75 - \frac{0.5}{N}, \quad \delta = 1 - \frac{1}{N}
@@ -330,9 +330,10 @@ Dans notre implémentation, trois paramètres hydrogéologiques fondamentaux son
 
 \subsubsection{Fonction objectif et sélection des données}
 
-La fonction objectif utilisée dans notre cas est le critère de Nash-Sutcliffe (NSE):
+La fonction objectif utilisée dans notre cas est le critère de Nash-Sutcliffe - NSE \parencite{nashRiverFlowForecasting1970}, qui évalue la qualité de la simulation par rapport aux données observées. Le NSE est défini comme suit:
+
 \begin{equation}\label{eq:nse}
-\text{NSE} = 1 - \frac{\sum_{t=1}^{T}(Q_{obs,t} - Q_{sim,t})^2}{\sum_{t=1}^{T}(Q_{obs,t} - \bar{Q}_{obs})^2}
+    \text{NSE} = 1 - \frac{\sum_{t=1}^{T}(Q_{obs,t} - Q_{sim,t})^2}{\sum_{t=1}^{T}(Q_{obs,t} - \bar{Q}_{obs})^2}
 \end{equation}
 
 Notre implémentation permet de sélectionner précisément les données utilisées pour la calibration:
