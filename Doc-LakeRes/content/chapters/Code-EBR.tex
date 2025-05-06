@@ -189,7 +189,7 @@ Où $x_1$ est le meilleur sommet (valeur de fonction la plus basse) et $x_{N+1}$
        \begin{equation}
        x_c = x_0 + \gamma (x_r - x_0)
        \end{equation}
-       où $\gamma$ est le coefficient de contraction (compris entre 0 et 1, égal à 0.5 dans notre cas). Ce coefficient restreint l'exploration à une zone plus proche du centroïde.
+       où $\gamma$ est le coefficient de contraction. Ce coefficient restreint l'exploration à une zone plus proche du centroïde.
        
        On évalue ensuite :
        \begin{equation}
@@ -230,7 +230,7 @@ Où $x_1$ est le meilleur sommet (valeur de fonction la plus basse) et $x_{N+1}$
        \begin{equation}
        x_i \leftarrow x_1 + \delta (x_i - x_1)
        \end{equation}
-       où $\delta$ est le coefficient de rétrécissement (entre 0 et 1, égal à 0.5 dans notre cas). Ce coefficient détermine à quel point le simplex se contracte autour du meilleur point.
+       où $\delta$ est le coefficient de rétrécissement. Ce coefficient détermine à quel point le simplex se contracte autour du meilleur point.
        
        Cette opération réduit la taille du simplex et recentre la recherche autour du meilleur point actuel, permettant une exploration plus fine et locale de l'espace des paramètres.
        \end{itemize}

@@ -1,0 +1,47 @@
+%==============================================================================
+% CHAPITRE PYTHON TIPQ
+%==============================================================================
+
+\chapter{Python Tips}
+\label{chap:python_tips}
+
+% Mini-table des matieres du chapitre
+\minitableofcontents
+
+\newpage
+
+%------------------------------------------------------------------------------
+% CONTENU
+%------------------------------------------------------------------------------
+
+\section{Decorators}
+\label{sec:decorators}
+
+\subsection{@StaticMethod}
+\label{sec:staticmethod}
+
+\inlinecode{@staticmethod} est un décorateur qui transforme une méthode de classe en une méthode statique. Cela signifie que la méthode peut être appelée sur la classe elle-même, sans avoir besoin d'une instance de la classe. Les méthodes statiques n'ont pas accès à l'instance (\inlinecode{self}) ou à la classe (\inlinecode{cls}) et ne peuvent pas modifier l'état de l'objet ou de la classe.
+
+\begin{TipBox}
+    Elle fonctionne comme une fonction normale, mais organisée dans l'espace de noms de la classe.
+\end{TipBox}
+
+\vspace{1em}
+
+
+\noindent\textbf{Exemple :}
+
+\begin{minted}{python}
+class MathUtils:
+    @staticmethod
+    def add(x, y):
+        return x + y
+\end{minted}
+
+\begin{ImportantBox}
+    \begin{itemize}
+        \item Ne pas tenter d'accéder à \inlinecode{self} dans une méthode statique.
+        \item Ne pas utiliser \inlinecode{@staticmethod} quand la fonction à besoin d'accéder aux données de l'objet.
+        \item Ne pas confondre avec des fonctions globales - les méthodes statiques ont un lien conceptuel avec leur classe.
+    \end{itemize}
+\end{ImportantBox}
