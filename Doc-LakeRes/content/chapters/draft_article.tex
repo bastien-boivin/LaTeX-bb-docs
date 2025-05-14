@@ -1,0 +1,112 @@
+%==============================================================================
+% CHAPITRE DRAFT ARTICLE
+%==============================================================================
+
+\chapter{Draft Article}
+\label{chap:draft_article}
+
+% Mini-table des matieres du chapitre
+\minitableofcontents
+
+\newpage
+
+%------------------------------------------------------------------------------
+% CONTENU
+%------------------------------------------------------------------------------
+
+\section{Bilan hydro(géo)logique du barrage}
+\label{sec:bilan_hydrologique_barrage}
+
+\subsection{Contexte}
+\label{sec:contexte}
+
+Les petits barrages implantés sur les aquifères de socle (ou grès–sol de type « solce ») en Bretagne jouent un rôle essentiel dans l’alimentation en eau potable et la régulation des débits. Pourtant, l’évaluation quantitative des échanges souterrains qui les alimentent ou les drainent reste très incertaine : la variabilité du remplissage est bien documentée (hauteur d’eau quotidienne), mais l’origine et l’amplitude des flux entrant/sortant demeurent difficiles à contraindre.
+
+\subsection{Problématique}
+\label{sec:problematique}
+
+Peut-on, à partir de la seule chronique du niveau d’eau du lac de barrage, reconstituer les différents termes du bilan hydrogéologique ? Autrement dit, est-il possible de « déconvoluer » le signal de stockage pour isoler :
+\begin{itemize}[leftmargin=1.5em]
+    \item l’évaporation du lac (signal saisonnier bien marqué),
+    \item les pertes sous le barrage (flux souterrain supposé quasi-stationnaire),
+    \item les apports souterrains (flux inconnu et potentiellement variable),
+    \item les apports et sorties de surface contrôlés (déversoir, prises d’eau).
+\end{itemize}
+
+\subsection{Objectifs}
+\label{sec:objectifs}
+
+\begin{itemize}[leftmargin=1.5em]
+    \item Développer une méthode analytique/inverse permettant d'estimer chaque terme du bilan directement à partir de la fluctuation volumique $\Delta V/\Delta t$ du réservoir.
+    \item Vérifier jusqu'où cette approche peut se substituer à un modèle numérique complet.
+    \item Utiliser \textit{a posteriori} un modèle MODFLOW (packages SFR + LAK) pour comparer les ordres de grandeur obtenus et tester la robustesse des hypothèses.
+\end{itemize}
+
+\subsection{Cadre conceptuel}
+\label{sec:cadre_conceptuel}
+
+Le bilan massique du barrage à pas de temps journalier s’écrit :
+
+\begin{equation}
+    \frac{dV}{dt} = P A - E A + Q_{\text{surface,in}} - Q_{\text{surface,out}} + Q_{\text{gw,in}} - Q_{\text{gw,out}},
+\end{equation}
+
+où :
+
+\begin{center}
+    \begin{tabular}{>{$}c<{$} l l}
+        \toprule
+            \textbf{Symbole} & \textbf{Description} & \textbf{Nature attendue} \\
+            \midrule
+            P & Précipitation (observée) & forcée \\
+            E & Évaporation (forçage saisonnier) & périodique \\
+            Q_{\text{surface,in}} & Débits d’affluents & mesurés/connus \\
+            Q_{\text{surface,out}} & Turbinage, déversoir & piloté \\
+            Q_{\text{gw,in}} & Drainage souterrain vers le lac & inconnu \\
+            Q_{\text{gw,out}} & Fuites sous le barrage & quasi constant \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+
+\subsection{Méthodologie à explorer}
+\label{sec:methodologie_explorer}
+
+\noindent\textbf{Analyse spectrale \& filtrage}
+\begin{itemize}[leftmargin=1.5em]
+    \item Extraire le signal saisonnier (cycle annuel) attribué à $E A$.
+    \item Séparer les basses fréquences (tendances à long terme) potentiellement liées à $Q_{\text{gw,in}}$.
+\end{itemize}
+
+\vspace{1em}
+
+\noindent\textbf{Déconvolution / optimisation inverse}
+\begin{itemize}[leftmargin=1.5em]
+    \item Formuler un système linéaire discret où les flux inconnus sont des paramètres constants ou faiblement variables.
+    \item Ajuster ces paramètres par moindres carrés (ou approche bayésienne) pour minimiser l’écart entre $\Delta V / \Delta t$ observé et reconstruit.
+\end{itemize}
+
+\vspace{1em}
+
+\noindent\textbf{Validation par modélisation numérique}
+\begin{itemize}[leftmargin=1.5em]
+    \item Injecter les flux estimés comme conditions aux limites dans MODFLOW-SFR/LAK.
+    \item Vérifier la cohérence hydraulique et les gradients simulés sous le barrage.
+\end{itemize}
+
+\subsection{Résultats attendus}
+\label{sec:resultats_attendus}
+
+\begin{itemize}[leftmargin=1.5em]
+    \item Un cadre méthodologique générique de reconstruction de bilans hydrogéologiques de barrages dépourvus de jaugeages directs.
+    \item Des estimations de $Q_{\text{gw,in}}$ et $Q_{\text{gw,out}}$ pour le site breton étudié, assorties d’incertitudes.
+    \item Des recommandations sur les limites de validité (périodes sans vidange, influence des pluies extrêmes, etc.).
+\end{itemize}
+
+\subsection{Originalité}
+\label{sec:originalite}
+
+\begin{itemize}[leftmargin=1.5em]
+    \item Approche « inverse-sans-modèle » appliquée à des aquifères de socle, rarement documentée dans la littérature.
+    \item Couplage a posteriori avec un modèle MODFLOW pour tester la plausibilité physique des flux inversés, plutôt que l’inverse (calage direct du modèle).
+\end{itemize}
